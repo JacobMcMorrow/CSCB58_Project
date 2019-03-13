@@ -93,3 +93,55 @@ module bpm_off( // eighth notes
 	end
 	
 endmodule
+
+// ===============================================================================
+//       
+// ===============================================================================
+
+module bpm_test( // 2 en signals per beat. Quarter and eighth notes will alternate
+	output reg en,
+	input clk,
+	input go,
+	input reset,
+	input [7:0] bpm // this may need 1 more bit
+	);
+	// currently to use, set go to 1 and then hit reset to set bpm
+	
+	reg [8:0] beat;
+	initial beat = 8'd120; // avoid dividing by 0
+
+	reg [20:0] count; // 833,333 cycles per min
+	reg [20:0] slow_ratio; // 20 bit reg to slow the clock down to 1 bpm
+	initial slow_ratio = 20'd27776; // corresponds to 60 bpm x2
+	
+	// 50,000,000 cycles per sec
+	// 833,333.33 cycles per min
+	
+	// clock will tick constantly
+	always @(posedge clk)
+	begin
+		if (reset) // set new bpm and clock when we reset
+		begin
+			beat <= bpm*2;
+			slow_ratio <= clk/beat;
+			count <= slow_ratio - 20'b1;
+		end
+		else
+		begin // count down otherwise
+			if (count == 20'b0)
+				count <= slow_ratio - 20'b1;
+			else
+				count <= count - 20'b1;
+		end
+	end
+	
+	// en signal only if we also have go signal
+	always @(*)
+	begin
+		if (count == 20'b0 && go)
+			en <= 1;
+		else
+			en <= 0;
+	end
+	
+endmodule
