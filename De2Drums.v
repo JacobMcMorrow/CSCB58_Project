@@ -7,13 +7,10 @@ module De2Drums(
 	);
 	
 	// for testing, set go to 1 and reset to store bpm
-	wire bpm1_en, bpm2_en, bpm3_en, slowed_clock, test_clock;
-	assign LEDR[0] = bpm1_en;
-	assign LEDR[1] = bpm2_en;
+	wire bpm3_en, slowed_clock, test_clock;
 	assign LEDR[2] = bpm3_en;
-	assign slowed_clock = bpm1_en || bpm2_en;
-	assign test_clock = bpm3_en;
-	
+
+	/*
 	bpm_on bpm_1( // quarter notes - these are currently disjoint from datapath for testing purposes
 		.en(bpm1_en),
 		.clk(CLOCK_50),
@@ -29,12 +26,14 @@ module De2Drums(
 		.go(SW[8]),
 		.bpm(SW[7:0])
 		);
+		*/
 		
 	bpm_test bpm_3( // currently this is connected with control and datapath for testing purposes
-		.en(bpm3_en),
+		.bpm_out(bpm3_en),
 		.clk(CLOCK_50),
+		.load_bpm(load_bpm),
 		.reset(KEY[1]),
-		.go(SW[8]),
+		.go(play),
 		.bpm(SW[7:0])
 		);
 		
@@ -46,9 +45,10 @@ module De2Drums(
 		.ld_bpm(ld_bpm),
 		.play(play),
 		.timing(timing),
-		.clk(test_clock), // try test clock
+		.clk(CLOCK_50), // try test clock
+		.slow_clk(bpm3_en),
 		.reset(KEY[1]),
-		.go(KEY[3]) // SW[3] to move between states, this will change
+		.go(~KEY[2]) // KEY[3] to move between states, this will change
 		);
 		
 	datapath(
@@ -56,12 +56,14 @@ module De2Drums(
 		.ins2_out(LEDR[6]),
 		.ins3_out(LEDR[7]),
 		.ins4_out(LEDR[8]),
+		.bpm_out(bpm_out),
 		.ld_ins1(ld_ins1),
 		.ld_ins2(ld_ins2),
 		.ld_ins3(ld_ins3),
 		.ld_ins4(ld_ins4),
 		.ld_bpm(ld_bpm),
-		.clk(test_clock), // try test clock
+		.clk(CLOCK_50),
+		.slow_clk(bpm3_en), // try test clock
 		.timing(timing),
 		.sel(SW[7:0]),
 		.reset(KEY[1]),

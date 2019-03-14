@@ -3,12 +3,14 @@ module datapath(
 	output reg ins2_out,
 	output reg ins3_out,
 	output reg ins4_out,
+	output reg bpm_out,
 	input ld_ins1,
 	input ld_ins2,
 	input ld_ins3,
 	input ld_ins4,
 	input ld_bpm,
-	input clk, // slowed clock from bpm module
+	input clk,
+	input slow_clk, // slowed clock from bpm module
 	input [2:0] timing, // 3 bit timing
 	input [7:0] sel, // this is our select for bpm/drum beat depending on state
 	input reset, 
@@ -19,7 +21,7 @@ module datapath(
 	initial bpm = 8'd60;
 	
 	// instrument loading block
-	always @(*)  // currently inferring latches, do I want this to be synchronous? Leaning towards no.
+	always @(clk)  // currently inferring latches, do I want this to be synchronous? Leaning towards no.
 	begin: instrument_loading
 		if (!reset) 
 		begin
@@ -27,6 +29,7 @@ module datapath(
 			ins2 <= 8'b0;
 			ins3 <= 8'b0;
 			ins4 <= 8'b0;
+			bpm <= 8'd60;
 		end
 		else
 		begin
