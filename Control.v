@@ -39,6 +39,9 @@ module control(
 	always @(*)
 	begin: state_table
 		case (current_state)
+			// load bpm - note: will have to check to see if we are loading 0
+			S_LOAD_BPM: next_state = go ? S_LOAD_BPM_WAIT : S_LOAD_BPM;
+			S_LOAD_BPM_WAIT: next_state = go ? S_LOAD_BPM_WAIT : S_LOAD_INS1;
 			// load instrument 1
 			S_LOAD_INS1: next_state = go ? S_LOAD_INS1_WAIT : S_LOAD_INS1;
 			S_LOAD_INS1_WAIT: next_state = go ? S_LOAD_INS1_WAIT : S_LOAD_INS2;
@@ -50,13 +53,10 @@ module control(
 			S_LOAD_INS3_WAIT: next_state = go ? S_LOAD_INS3_WAIT : S_LOAD_INS4;
 			// load instrument 4
 			S_LOAD_INS4: next_state = go ? S_LOAD_INS4_WAIT : S_LOAD_INS4;
-			S_LOAD_INS4_WAIT: next_state = go ? S_LOAD_INS4_WAIT : S_LOAD_BPM;
-			// load bpm - note: will have to check to see if we are loading 0
-			S_LOAD_BPM: next_state = go ? S_LOAD_BPM_WAIT : S_LOAD_BPM;
-			S_LOAD_BPM_WAIT: next_state = go ? S_LOAD_BPM_WAIT : S_PLAY;
+			S_LOAD_INS4_WAIT: next_state = go ? S_LOAD_INS4_WAIT : S_PLAY;
 			// loop through the 8 beats indefinitely
 			S_PLAY: next_state = S_PLAY;
-			default: next_state = S_LOAD_INS1;
+			default: next_state = S_LOAD_BPM;
 		endcase
 	end
 	
@@ -130,7 +130,7 @@ module control(
 	begin: load_state_transitions
 		if (!reset)
 		begin
-			current_state <= S_LOAD_INS1;
+			current_state <= S_LOAD_BPM;
 		end
 		else
 			current_state <= next_state;
