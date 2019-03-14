@@ -1,9 +1,9 @@
 module audio(
-	CLOCK_50,
-	AUD_ADCDAT,
 	AUD_XCK,
 	AUD_DACDAT,
 	I2C_SCLK,
+	CLOCK_50,
+	AUD_ADCDAT,
 	KEY,
 	mix_down // Output from the mixer module
 	AUD_BCLK,
