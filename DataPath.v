@@ -3,7 +3,11 @@ module datapath(
 	output reg ins2_out,
 	output reg ins3_out,
 	output reg ins4_out,
-	output reg bpm_out,
+	output reg [7:0] set_bpm,
+	output reg [7:0] ins1,
+	output reg [7:0] ins2,
+	output reg [7:0] ins3,
+	output reg [7:0] ins4,
 	input ld_ins1,
 	input ld_ins2,
 	input ld_ins3,
@@ -17,11 +21,10 @@ module datapath(
 	input play
 	);
 	
-	reg [7:0] ins1, ins2, ins3, ins4, bpm;
-	initial bpm = 8'd60;
+	//reg [7:0] ins1, ins2, ins3, ins4, bpm;
 	
 	// instrument loading block
-	always @(clk)  // currently inferring latches, do I want this to be synchronous? Leaning towards no.
+	always @(*)  // currently inferring latches, do I want this to be synchronous? Leaning towards no.
 	begin: instrument_loading
 		if (!reset) 
 		begin
@@ -29,25 +32,24 @@ module datapath(
 			ins2 <= 8'b0;
 			ins3 <= 8'b0;
 			ins4 <= 8'b0;
-			bpm <= 8'd60;
 		end
 		else
 		begin
 			if (ld_ins1)
-				ins1 <= sel;
+				ins1 <= sel[7:0];
 			if (ld_ins2)
-				ins2 <= sel;
+				ins2 <= sel[7:0];
 			if (ld_ins3)
-				ins3 <= sel;
+				ins3 <= sel[7:0];
 			if (ld_ins4)
-				ins4 <= sel;
+				ins4 <= sel[7:0];
 			if (ld_bpm)
-				bpm <= sel;
+				set_bpm <= sel[7:0];
 		end
 	end
 	
 	// instrument timing block
-	always @(posedge clk)
+	always @(*)
 	begin: instrument_timing
 		if (play)
 		begin
