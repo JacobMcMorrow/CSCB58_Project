@@ -7,7 +7,7 @@ module counter_clave(count, clk, en, go);
 
 	// define parameters
 	// max count
-	parameter MAXCOUNT = 12'd6600;
+	parameter MAXCOUNT = 13'd6600;
 	// counting state
 	parameter COUNT = 0;
 	// pause state

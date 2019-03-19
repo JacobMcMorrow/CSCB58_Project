@@ -1,4 +1,4 @@
-module mixer(mix_down
+module mixer(mix_down,
 						 CLOCK_50, 
 						 audio0,
 						 audio1,
@@ -10,7 +10,7 @@ module mixer(mix_down
 						 audio7
 						 );
 	input CLOCK_50;
-	input [7:0] audio0, audio1, audio2, audio3, audio4, audio5, audio6, audio7);
+	input [7:0] audio0, audio1, audio2, audio3, audio4, audio5, audio6, audio7;
 	output [31:0] mix_down;
 
 	wire [8:0] add_zero0, add_zero1, add_zero2, add_zero3;

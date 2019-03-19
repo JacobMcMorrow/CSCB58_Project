@@ -7,7 +7,7 @@ module counter_hat(count, clk, en, go);
 
 	// define parameters
 	// max count
-	parameter MAXCOUNT = 13'd12348;
+	parameter MAXCOUNT = 14'd12348;
 	// counting state
 	parameter COUNT = 0;
 	// pause state

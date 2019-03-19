@@ -7,7 +7,7 @@ module counter_kick(count, clk, en, go);
 
 	// define parameters
 	// max count
-	parameter MAXCOUNT = 15'd43840;
+	parameter MAXCOUNT = 16'd43840;
 	// counting state
 	parameter COUNT = 0;
 	// pause state

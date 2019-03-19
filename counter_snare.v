@@ -7,7 +7,7 @@ module counter_snare(count, clk, en, go);
 
 	// define parameters
 	// max count
-	parameter MAXCOUNT = 14'd16481;
+	parameter MAXCOUNT = 15'd16481;
 	// counting state
 	parameter COUNT = 0;
 	// pause state

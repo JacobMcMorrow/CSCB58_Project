@@ -116,4 +116,14 @@ module De2Drums(
 	hex_display hex_6(ins3, HEX6);
 	hex_display hex_7(ins4, HEX7);
 
+	// instantiate drum modules
+	snare snare();
+	kick kick();
+	hat hat();
+	clap clap();
+	clave clave();
+	tom tom();
+	conga conga();
+	cymbal cymbal();
+
 endmodule

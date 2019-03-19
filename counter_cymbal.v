@@ -7,7 +7,7 @@ module counter_cymbal(count, clk, en, go);
 
 	// define parameters
 	// max count
-	parameter MAXCOUNT = 17'd229120;
+	parameter MAXCOUNT = 18'd229120;
 	// counting state
 	parameter COUNT = 0;
 	// pause state

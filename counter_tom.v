@@ -7,7 +7,7 @@ module counter_tom(count, clk, en, go);
 
 	// define parameters
 	// max count
-	parameter MAXCOUNT = 15'd35264;
+	parameter MAXCOUNT = 16'd35264;
 	// counting state
 	parameter COUNT = 0;
 	// pause state

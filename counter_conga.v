@@ -7,7 +7,7 @@ module counter_conga(count, clk, en, go);
 
 	// define parameters
 	// max count
-	parameter MAXCOUNT = 15'd39648;
+	parameter MAXCOUNT = 16'd39648;
 	// counting state
 	parameter COUNT = 0;
 	// pause state

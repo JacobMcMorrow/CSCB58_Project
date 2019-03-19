@@ -7,7 +7,7 @@ module counter_clap(count, clk, en, go);
 
 	// define parameters
 	// max count
-	parameter MAXCOUNT = 16'd66080;
+	parameter MAXCOUNT = 17'd66080;
 	// counting state
 	parameter COUNT = 0;
 	// pause state
