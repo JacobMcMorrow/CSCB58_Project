@@ -1,8 +1,6 @@
 module kick(out, clk, en, go);
 	output [7:0] out;
-	input clk, en, go
-
-	// Max address 43840
+	input clk, en, go;
 
 	wire [15:0] address;
 	wire [7:0] rom_out;
@@ -11,7 +9,7 @@ module kick(out, clk, en, go);
 	counter_kick counter(.count(address), .clk(clk), .en(en), .go(go));
 
 	// rom
-	kick_rom rom(.address(address), .clock(clock), .q(rom_out));	
+	kick_rom rom(.address(address), .clock(clk), .q(rom_out));	
 
 	assign out = rom_out;
 
