@@ -10,12 +10,12 @@ module mixer(mix_down
 						 audio7
 						 );
 	input CLOCK_50;
-	input [15:0] audio0, audio1, audio2, audio3, audio4, audio5, audio6, audio7);
+	input [7:0] audio0, audio1, audio2, audio3, audio4, audio5, audio6, audio7);
 	output [31:0] mix_down;
 
-	wire [16:0] add_zero0, add_zero1, add_zero2, add_zero3;
-	wire [17:0] add_one0, add_one1;
-	wire [18:0] add_two;
+	wire [8:0] add_zero0, add_zero1, add_zero2, add_zero3;
+	wire [9:0] add_one0, add_one1;
+	wire [10:0] add_two;
 
 	// First stage
 	adder_zero a0(.out(add_zero0), .in0(audio0), .in1(audio1));

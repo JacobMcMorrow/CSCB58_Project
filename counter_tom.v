@@ -1,13 +1,13 @@
-module counter_snare(count, clk, en, go);
-	output [14:0] count;
+module counter_tom(count, clk, en, go);
+	output [15:0] count;
 	input  clk, en, go;
 
-	reg [14:0] cnt;
+	reg [15:0] cnt;
 	reg state, next_state, cnt_enable;
 
 	// define parameters
 	// max count
-	parameter MAXCOUNT = 14'd16481;
+	parameter MAXCOUNT = 15'd35264;
 	// counting state
 	parameter COUNT = 0;
 	// pause state
@@ -18,7 +18,7 @@ module counter_snare(count, clk, en, go);
 	always @(posedge clk) begin
 		if (go) begin
 			state <= COUNT;
-			cnt <= 14'b0;
+			cnt <= 15'b0;
 		end
 		else begin
 			state <= PAUSE;
