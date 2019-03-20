@@ -1,4 +1,4 @@
-module bpm_test( // 2 en signals per beat. Quarter and eighth notes will alternate
+module bpm( // 2 en signals per beat. Quarter and eighth notes will alternate
 	output reg bpm_out,
 	input clk,
 	input load_bpm,
@@ -11,50 +11,43 @@ module bpm_test( // 2 en signals per beat. Quarter and eighth notes will alterna
 	reg [8:0] beat;
 	initial beat = 8'd120; // avoid dividing by 0
 
-	reg [28:0] count; // 833,333 cycles per min
-	reg [28:0] slow_ratio; // 20 bit reg to slow the clock down to 1 bpm
-	initial slow_ratio = 20'd833333;
+	reg [32:0] count; // rate divided clock
+	reg [32:0] max_count;
+	initial count = 32'd50_000_000; // start at 60 bpm
 	
-	// 50,000,000 cycles per sec
-	// 833,333.33 cycles per min
+	// count at 50,000,000 cooresponds to 60 bpm
 	
-	// clock will tick constantly
+	// Counter
 	always @(posedge clk)
 	begin
 		if (!reset) // set new bpm and clock when we reset
 		begin
 			beat <= 8'd120;
-			slow_ratio <= 28'd50_000_000;
-			count <= 28'd50_000_000;
+			max_count <= 32'd50_000_000;
+			count <= 32'd50_000_000; // default 60 bpm
 		end
 		else if (load_bpm)
 		begin
-			beat <= bpm << 1;
-			slow_ratio <= 28'd50_000_000; // hard coding bpm to testing
-			count <= slow_ratio;
+			beat <= bpm << 1;; // hard coding bpm to testing
+			max_count <= 32'd3_000_000_000/beat;
+			count <= max_count;
 		end
 		else
 		begin // count down otherwise
-			if (count == 28'b0)
-				count <= slow_ratio;
+			if (count == 32'b0)
+				count <= max_count;
 			else
-				count <= count - 28'b1;
+				count <= count - 32'b1;
 		end
 	end
 	
 	// en signal only if we also have go signal
 	always @(*)
 	begin
-		if (count == 28'b0 && play)
+		if (count == 32'b0 && play)
 			bpm_out <= 1;
 		else
 			bpm_out <= 0;
 	end
 	
 endmodule
-/*
-50,000,000 cycles per sec
-60 bpm / 60 = 1 beat per sec
-
-
-*/
