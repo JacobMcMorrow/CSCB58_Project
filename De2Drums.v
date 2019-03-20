@@ -17,6 +17,13 @@ module De2Drums(
 	wire [7:0] ins1, ins2, ins3, ins4, set_bpm;
 	wire [2:0] timing;
 	wire ld_ins1, ld_ins2, ld_ins3, ld_ins4, ld_bpm, play;
+	// sample outputs
+	wire [7:0] snare_out, kick_out, hat_out, clap_out;
+	// mixer output
+	wire [31:0] mix_down;
+
+	// sample timings
+	wire ins1_out, ins2_out, ins3_out, ins4_out;
 
 	bpm_test bpm_3( // currently this is connected with control and datapath for testing purposes
 		.bpm_out(bpm3_en),
@@ -27,7 +34,7 @@ module De2Drums(
 		.bpm(set_bpm)
 		);
 		
-	control(
+	control control(
 		.ld_ins1(ld_ins1),
 		.ld_ins2(ld_ins2),
 		.ld_ins3(ld_ins3),
@@ -41,11 +48,15 @@ module De2Drums(
 		.go(~KEY[2]) // KEY[3] to move between states, this will change
 		);
 		
-	datapath(
-		.ins1_out(LEDR[5]),
-		.ins2_out(LEDR[6]),
-		.ins3_out(LEDR[7]),
-		.ins4_out(LEDR[8]),
+	datapath datapath(
+		.ins1_out(ins1_out),
+		.ins2_out(ins2_out),
+		.ins3_out(ins3_out),
+		.ins4_out(ins4_out),
+		 // .ins1_out(LEDR[5]),
+		 // .ins2_out(LEDR[6]),
+		 // .ins3_out(LEDR[7]),
+		 // .ins4_out(LEDR[8]),
 		.set_bpm(set_bpm),
 		.ins1(ins1), // testing
 		.ins2(ins2), // testing
@@ -117,13 +128,44 @@ module De2Drums(
 	hex_display hex_7(ins4, HEX7);
 
 	// instantiate drum modules
-	snare snare();
-	kick kick();
-	hat hat();
-	clap clap();
-	clave clave();
-	tom tom();
-	conga conga();
-	cymbal cymbal();
+	snare snare(
+		.out(snare_out),
+		.clk(CLOCK_50),
+		.en(play),
+		.go(ins1_out)
+		);
+	kick kick(
+		.out(kick_out),
+		.clk(CLOCK_50),
+		.en(play),
+		.go(ins2_out)
+		);
+	hat hat(
+		.out(hat_out),
+		.clk(CLOCK_50),
+		.en(play),
+		.go(ins3_out)
+		);
+	clap clap(
+		.out(clap_out),
+		.clk(CLOCK_50),
+		.en(play),
+		.go(ins4_out)
+		);
+	
+	// instantiate mixer
+	mixer mixer(
+		.mix_down(mix_down),
+		.audio0(snare_out),
+		.audio1(kick_out),
+		.audio2(hat_out),
+		.audio3(clap_out)
+		);
+	
+	// instantiate audio
+	audio audio(
+		.CLOCK_50(CLOCK_50),
+		.mix_down(mix_down)
+		);
 
 endmodule

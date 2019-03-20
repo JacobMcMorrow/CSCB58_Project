@@ -2,7 +2,7 @@ module counter_snare(count, clk, en, go);
 	output [14:0] count;
 	input  clk, en, go;
 
-	reg [14:0] cnt;
+	reg [14:0] count;
 	reg state, next_state, cnt_enable;
 
 	// define parameters
@@ -18,21 +18,21 @@ module counter_snare(count, clk, en, go);
 	always @(posedge clk) begin
 		if (go) begin
 			state <= COUNT;
-			cnt <= 14'b0;
+			count <= 15'b0;
 		end
 		else begin
 			state <= PAUSE;
-			cnt <= cnt + cnt_enable;
+			count <= count + cnt_enable;
 		end
 	end
 
 	// counting block
-	always @(state, cnt, en, go) begin
+	always @(state, count, en, go) begin: state_table
 		cnt_enable = 0;
 		case(state)
 			// there's got to be a way to clean this up
 			COUNT:
-				if (cnt == MAXCOUNT) begin
+				if (count == MAXCOUNT) begin
 					next_state = PAUSE;
 					cnt_enable = 0;
 				end
