@@ -87,14 +87,16 @@ endmodule
 
 module vga_counters(
 	output reg [3:0] square_counter,
+	output reg [7:0] dx,
 	output reg [6:0] dy,
 	input en,
 	input reset,
 	input clk
 );
 
-	reg next_square;
-	reg [1:0] current_state, next_state;
+	reg next_row, next_col;
+	reg [1:0] current_dy_state, next_dy_state;
+	reg [2:0] current_dx_state, next_dx_state;
 	
 	// 4 bit counter
 	always @(posedge clk)
@@ -102,49 +104,105 @@ module vga_counters(
 		if (!reset || square_counter == 4'b0)
 		begin
 			square_counter <= 4'b1111;
-			next_square <= 1'b1;
+			next_row <= 1'b1;
 		end
 		else
 		begin
 			square_counter <= square_counter - 4'b0001;
-			next_square <= 1'b0;
+			next_row <= 1'b0;
 		end
 	end
 	
-	// extra dy offset for drawing 4 squares 
+	// counter for columns
+	always @(posedge clk)
+	begin: next_column_counter
+		if (!reset || current_dy_state == dy_offset20)
+			next_col <= 1'b1;
+		else
+			next_col <= 1'b0;
+	end
+	
+	// dx, dy offset for drawing squares 
 	localparam dy_offset20 = 2'b00,
 		dy_offset40 = 2'b01,
 		dy_offset60 = 2'b10,
-		dy_offset80 = 2'b11;
-	
-	// small FSM to control dy offset
+		dy_offset80 = 2'b11,
+		dx_offset10 = 3'b000,
+		dx_offset30 = 3'b001,
+		dx_offset50 = 3'b010,
+		dx_offset70 = 3'b011,
+		dx_offset90 = 3'b100,
+		dx_offset110 = 3'b101,
+		dx_offset130 = 3'b110,
+		dx_offset150 = 3'b111;
+		
+	// FSM to control dy offset
 	always @(posedge clk)
 	begin: dy_offset_FSM
-		case(current_state)
-			dy_offset20: next_state = next_square ? dy_offset40 : dy_offset20;
-			dy_offset40: next_state = next_square ? dy_offset60 : dy_offset40;
-			dy_offset60: next_state = next_square ? dy_offset80 : dy_offset60;
-			dy_offset80: next_state = next_square ? dy_offset20 : dy_offset80;
-			default: next_state = dy_offset20;
+		case(current_dy_state)
+			dy_offset20: next_dy_state = next_row ? dy_offset40 : dy_offset20;
+			dy_offset40: next_dy_state = next_row ? dy_offset60 : dy_offset40;
+			dy_offset60: next_dy_state = next_row ? dy_offset80 : dy_offset60;
+			dy_offset80: next_dy_state = next_row ? dy_offset20 : dy_offset80;
+			default: next_dy_state = dy_offset20;
 		endcase
 	end
 	
 	always @(posedge clk)
-	begin: load_state_transitions
+	begin: dy_state_transitions
 		if (!reset)
-			current_state <= dy_offset20;
+			current_dy_state <= dy_offset20;
 		else
-			current_state <= next_state;
+			current_dy_state <= next_dy_state;
 	end
 	
 	always @(*)
 	begin: dy_signals
-		case(current_state)
+		case(current_dy_state)
 			dy_offset20: dy <= 7'd20;
 			dy_offset40: dy <= 7'd40;
 			dy_offset60: dy <= 7'd60;
 			dy_offset80: dy <= 7'd80;
 			default: dy <= 7'd20;
+		endcase
+	end
+	
+	// FSM to control dx offset
+	always @(posedge clk)
+	begin: dx_offset_FSM
+		case(current_dx_state)
+			dx_offset10: next_dx_state = next_col ? dx_offset30 : dx_offset10;
+			dx_offset30: next_dx_state = next_col ? dx_offset50 : dx_offset30;
+			dx_offset50: next_dx_state = next_col ? dx_offset70 : dx_offset50;
+			dx_offset70: next_dx_state = next_col ? dx_offset90 : dx_offset70;
+			dx_offset90: next_dx_state = next_col ? dx_offset110 : dx_offset90;
+			dx_offset110: next_dx_state = next_col ? dx_offset130 : dx_offset110;
+			dx_offset130: next_dx_state = next_col ? dx_offset150 : dx_offset130;
+			dx_offset150: next_dx_state = next_col ? dx_offset10 : dx_offset150;
+			default: next_dx_state = dx_offset10;
+		endcase
+	end
+	
+	always @(posedge clk)
+	begin: dx_state_transitions
+		if (!reset)
+			current_dx_state <= dx_offset10;
+		else
+			current_dx_state <= next_dx_state;
+	end
+	
+	always @(*)
+	begin: dy_signals
+		case(current_dx_state)
+			dx_offset10: dx <= 8'd10;
+			dx_offset30: dx <= 8'd30;
+			dx_offset50: dx <= 8'd50;
+			dx_offset70: dx <= 8'd70;
+			dx_offset90: dx <= 8'd90;
+			dx_offset110: dx <= 8'd110;
+			dx_offset130: dx <= 8'd130;
+			dx_offset150: dx <= 8'd150;
+			default: dx <= 8'd10;
 		endcase
 	end
 	
