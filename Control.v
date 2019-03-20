@@ -138,7 +138,7 @@ module control(
 	
 	always @(posedge slow_clk)
 	begin: loop_state_transitions
-		if (!play)
+		if (!play || !reset)
 			curr_loop_state <= S_LOOP_WAIT;
 		else
 			curr_loop_state <= next_loop_state;

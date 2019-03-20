@@ -12,8 +12,7 @@ module De2Drums(
 	);
 	
 	// for testing, set go to 1 and reset to store bpm
-	wire bpm3_en, slowed_clock, test_clock;
-	assign LEDR[2] = bpm3_en;
+	wire bpm_en, slowed_clock;
 	wire [7:0] ins1, ins2, ins3, ins4, set_bpm;
 	wire [2:0] timing;
 	wire ld_ins1, ld_ins2, ld_ins3, ld_ins4, ld_bpm, play;
@@ -25,16 +24,16 @@ module De2Drums(
 	// sample timings
 	wire ins1_out, ins2_out, ins3_out, ins4_out;
 
-	bpm_test bpm_3( // currently this is connected with control and datapath for testing purposes
-		.bpm_out(bpm3_en),
+	bpm bpm1( // currently this is connected with control and datapath for testing purposes
+		.bpm_out(bpm_en),
 		.clk(CLOCK_50),
-		.load_bpm(load_bpm),
+		.load_bpm(ld_bpm),
 		.reset(KEY[1]),
 		.play(play),
 		.bpm(set_bpm)
 		);
 		
-	control control(
+	control c1(
 		.ld_ins1(ld_ins1),
 		.ld_ins2(ld_ins2),
 		.ld_ins3(ld_ins3),
@@ -43,12 +42,12 @@ module De2Drums(
 		.play(play),
 		.timing(timing),
 		.clk(CLOCK_50), // try test clock
-		.slow_clk(bpm3_en),
+		.slow_clk(bpm_en),
 		.reset(KEY[1]),
 		.go(~KEY[2]) // KEY[3] to move between states, this will change
 		);
 		
-	datapath datapath(
+	datapath d1(
 		.ins1_out(ins1_out),
 		.ins2_out(ins2_out),
 		.ins3_out(ins3_out),
@@ -68,7 +67,7 @@ module De2Drums(
 		.ld_ins4(ld_ins4),
 		.ld_bpm(ld_bpm),
 		.clk(CLOCK_50),
-		.slow_clk(bpm3_en), // try test clock
+		.slow_clk(bpm_en), // try test clock
 		.timing(timing),
 		.sel(SW[7:0]),
 		.reset(KEY[1]),
