@@ -24,7 +24,7 @@ module De2Drums(
 	// sample timings
 	wire ins1_out, ins2_out, ins3_out, ins4_out;
 
-	bpm_test bpm_3( // currently this is connected with control and datapath for testing purposes
+	bpm bpm1( // currently this is connected with control and datapath for testing purposes
 		.bpm_out(bpm_en),
 		.clk(CLOCK_50),
 		.load_bpm(ld_bpm),
@@ -33,7 +33,7 @@ module De2Drums(
 		.bpm(set_bpm)
 		);
 		
-	control control(
+	control c1(
 		.ld_ins1(ld_ins1),
 		.ld_ins2(ld_ins2),
 		.ld_ins3(ld_ins3),
@@ -47,7 +47,7 @@ module De2Drums(
 		.go(~KEY[2]) // KEY[3] to move between states, this will change
 		);
 		
-	datapath datapath(
+	datapath d1(
 		.ins1_out(ins1_out),
 		.ins2_out(ins2_out),
 		.ins3_out(ins3_out),
