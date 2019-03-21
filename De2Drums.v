@@ -31,9 +31,6 @@ module De2Drums(
 
 	// sample timings
 	wire ins1_out, ins2_out, ins3_out, ins4_out;
-	
-	// testing
-	wire [4:0] square_number;
 
 	bpm bpm1( // currently this is connected with control and datapath for testing purposes
 		.bpm_out(bpm_en),
@@ -99,8 +96,7 @@ module De2Drums(
 		.VGA_SYNC_N(VGA_SYNC_N),					//	VGA SYNC
 		.VGA_R(VGA_R),   								//	VGA Red[9:0]
 		.VGA_G(VGA_G),	 								//	VGA Green[9:0]
-		.VGA_B(VGA_B),   								//	VGA Blue[9:0]
-		.square_number(square_number) // TESTING
+		.VGA_B(VGA_B)   								//	VGA Blue[9:0]
 	);
 	
 	// for testing only to see what instrument we are inputting
@@ -148,10 +144,6 @@ module De2Drums(
 		else
 			hex1_in = 4'h0;
 	end
-	
-	// debugging for ins 1-4
-	hex_display hex_4(square_number[3:0], HEX4);
-	hex_display hex_5(square_number[4], HEX5);
 
 	// instantiate drum modules
 	snare snare(
