@@ -5,7 +5,7 @@ module control(
 	output reg ld_ins4,
 	output reg ld_bpm,
 	output reg play, // enable signal
-	output reg [2:0] timing, // timing is the beat we are on
+	output reg [3:0] timing, // timing is the beat we are on
 	input clk,
 	input slow_clk,
 	input reset,
@@ -97,32 +97,36 @@ module control(
 	
 	always @(*)
 	begin: loop_state_signals
+		timing <= 4'd0;
 		case (curr_loop_state)
+			S_LOOP_WAIT: begin
+				timing <= 4'd0;
+			end
 			S_QUARTER_NOTE1: begin
-				timing <= 3'd0;
+				timing <= 4'd1;
 			end
 			S_EIGHTH_NOTE1: begin
-				timing <= 3'd1;
+				timing <= 4'd2;
 			end
 			S_QUARTER_NOTE2: begin
-				timing <= 3'd2;
+				timing <= 4'd3;
 			end
 			S_EIGHTH_NOTE2: begin
-				timing <= 3'd3;
+				timing <= 4'd4;
 			end
 			S_QUARTER_NOTE3: begin
-				timing <= 3'd4;
+				timing <= 4'd5;
 			end
 			S_EIGHTH_NOTE3: begin
-				timing <= 3'd5;
+				timing <= 4'd6;
 			end
 			S_QUARTER_NOTE4: begin
-				timing <= 3'd6;
+				timing <= 4'd7;
 			end
 			S_EIGHTH_NOTE4: begin
-				timing <= 3'd7;
+				timing <= 4'd8;
 			end
-			default: timing <= 3'd0;
+			default: timing <= 4'd0;
 		endcase
 	end
 	

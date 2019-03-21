@@ -16,17 +16,18 @@ module vga_signals
 		VGA_SYNC_N,						//	VGA SYNC
 		VGA_R,   						//	VGA Red[9:0]
 		VGA_G,	 						//	VGA Green[9:0]
-		VGA_B   							//	VGA Blue[9:0]
+		VGA_B,   							//	VGA Blue[9:0]
+		square_number // TESTING
 	);
 
 	input	clk;				//	50 MHz
 	input play;
 	input reset;			// we will actually reset the screen to all black
-	input ins1;				// from datapath, if each instrument is on at the moment
-	input ins2;
-	input ins3;
-	input ins4;
-	input [2:0] timing;  // timing representing what note we are currently on
+	input [7:0] ins1;				// from datapath, if each instrument is on at the moment
+	input [7:0] ins2;
+	input [7:0] ins3;
+	input [7:0] ins4;
+	input [3:0] timing;  // timing representing what note we are currently on
 
 	// Declare your inputs and outputs here
 	// Do not change the following outputs
@@ -38,12 +39,13 @@ module vga_signals
 	output	[9:0]	VGA_R;   				//	VGA Red[9:0]
 	output	[9:0]	VGA_G;	 				//	VGA Green[9:0]
 	output	[9:0]	VGA_B;   				//	VGA Blue[9:0]
+	output [4:0] square_number;
 
 	reg [2:0] colour; // colour of each square
-	reg [3:0] square_offset; // 4 bit counter used to draw our 4 pixel square
-	reg [7:0] dx_offset; // x offset for each square
-	reg [6:0] dy_offset; // y offset for each square
-	reg [4:0] square_number; // what square are we drawing
+	wire [3:0] square_offset; // 4 bit counter used to draw our 4 pixel square
+	wire [7:0] dx_offset; // x offset for each square
+	wire [6:0] dy_offset; // y offset for each square
+	//wire [4:0] square_number; // what square are we drawing
 	reg [7:0] x; // final x value for vga adapter
 	reg [6:0] y; // final y value for vga adapter
 
@@ -53,7 +55,7 @@ module vga_signals
 	// image file (.MIF) for the controller.
 	vga_adapter VGA(
 			.resetn(reset),
-			.clock(CLOCK_50),
+			.clock(clk),
 			.colour(colour),
 			.x(x),
 			.y(y),
@@ -71,7 +73,6 @@ module vga_signals
 		defparam VGA.MONOCHROME = "FALSE";
 		defparam VGA.BITS_PER_COLOUR_CHANNEL = 1;
 		defparam VGA.BACKGROUND_IMAGE = "black.mif";
-			
 
 	// using x: 10, 30, 50, 70, 90, 110, 130, 150
 	// using y: 20, 40, 60, 80
@@ -84,6 +85,378 @@ module vga_signals
 		.reset(reset),
 		.clk(clk)
 		);
+	
+	// display colour block
+	always @(*)
+	begin
+		// timing == 0001
+		if (square_number == 5'd0) // square 1
+			if (ins1[0] == 1'b1)
+				if (timing == 4'd1)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd1)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd1) // square 2
+			if (ins2[0] == 1'b1)
+				if (timing == 4'd1)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd1)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd2) // square 3
+			if (ins3[0] == 1'b1)
+				if (timing == 4'd1)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd1)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd3) // square 4
+			if (ins4[0] == 1'b1)
+				if (timing == 4'd1)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd1)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		// timing == 0010
+		else if (square_number == 5'd4) // square 5
+			if (ins1[1] == 1'b1)
+				if (timing == 4'd2)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd2)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd5) // square 6
+			if (ins2[1] == 1'b1)
+				if (timing == 4'd2)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd2)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd6) // square 7
+			if (ins3[1] == 1'b1)
+				if (timing == 4'd2)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd2)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd7) // square 8
+			if (ins4[1] == 1'b1)
+				if (timing == 4'd2)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd2)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		// timing == 0011
+		else if (square_number == 5'd8) // square 9
+			if (ins1[2] == 1'b1)
+				if (timing == 4'd3)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd3)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd9) // square 10
+			if (ins2[2] == 1'b1)
+				if (timing == 4'd3)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd3)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd10) // square 11
+			if (ins3[2] == 1'b1)
+				if (timing == 4'd3)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd3)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd11) // square 12
+			if (ins4[2] == 1'b1)
+				if (timing == 4'd3)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd3)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		// timing == 0100
+		else if (square_number == 5'd12) // square 13
+			if (ins1[3] == 1'b1)
+				if (timing == 4'd4)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd4)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd13) // square 14
+			if (ins2[3] == 1'b1)
+				if (timing == 4'd4)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd4)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd14) // square 15
+			if (ins3[3] == 1'b1)
+				if (timing == 4'd4)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd4)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd15) // square 16
+			if (ins4[3] == 1'b1)
+				if (timing == 4'd4)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd4)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		// timing == 0101
+		else if (square_number == 5'd16) // square 17
+			if (ins1[4] == 1'b1)
+				if (timing == 4'd5)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd5)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd17) // square 18
+			if (ins2[4] == 1'b1)
+				if (timing == 4'd5)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd5)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd18) // square 19
+			if (ins3[4] == 1'b1)
+				if (timing == 4'd5)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd5)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd19) // square 20
+			if (ins4[4] == 1'b1)
+				if (timing == 4'd5)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd5)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		// timing == 0110
+		else if (square_number == 5'd20) // square 21
+			if (ins1[5] == 1'b1)
+				if (timing == 4'd6)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd6)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd21) // square 22
+			if (ins2[5] == 1'b1)
+				if (timing == 4'd6)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd6)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd22) // square 23
+			if (ins3[5] == 1'b1)
+				if (timing == 4'd6)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd6)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd23) // square 24
+			if (ins4[5] == 1'b1)
+				if (timing == 4'd6)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd6)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		// timing == 0111
+		else if (square_number == 5'd24) // square 25
+			if (ins1[6] == 1'b1)
+				if (timing == 4'd7)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd7)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd25) // square 26
+			if (ins2[6] == 1'b1)
+				if (timing == 4'd7)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd7)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd26) // square 27
+			if (ins3[6] == 1'b1)
+				if (timing == 4'd7)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd7)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd27) // square 28
+			if (ins4[6] == 1'b1)
+				if (timing == 4'd7)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd7)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		// timing == 1000
+		else if (square_number == 5'd28) // square 29
+			if (ins1[7] == 1'b1)
+				if (timing == 4'd8)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd8)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd29) // square 30
+			if (ins2[7] == 1'b1)
+				if (timing == 4'd8)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd8)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd30) // square 31
+			if (ins3[7] == 1'b1)
+				if (timing == 4'd8)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd8)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+		else if (square_number == 5'd31) // square 32
+			if (ins4[7] == 1'b1)
+				if (timing == 4'd8)
+					colour <= 3'b100;
+				else
+					colour <= 3'b010;
+			else
+				if (timing == 4'd8)
+					colour <= 3'b001;
+				else
+					colour <= 3'b111;
+	end
+
+	// display timing block
+	always @(*)
+	begin
+		x <= dx_offset + square_offset[1:0];
+		y <= dy_offset + square_offset[3:2];
+	end
 
 endmodule
 
@@ -99,7 +472,7 @@ module vga_counters(
 
 	reg count_zero;
 	reg [4:0] square_state;
-	reg next_square, current_square;
+	reg [4:0] next_square, current_square;
 	
 	// 4 bit counter
 	always @(posedge clk)
@@ -116,108 +489,6 @@ module vga_counters(
 		end
 	end
 
-/*
-	always @(posedge clk)
-	begin
-		if (!reset || next_row == 1'b1 && row_to_col_count == 2'b0)
-		begin
-			row_to_col_count <= 2'b11;
-			next_col <= 1'b1;
-		end
-		else if (next_row == 1'b1)
-		begin
-			row_to_col_count <= row_to_col_count - 2'b01;
-			next_col <= 1'b0;
-		end
-		else
-			next_col <= 1'b0;
-	end
-			
-
-	// dx, dy offset for drawing squares - probably a better way for dx
-	localparam dy_offset20 = 2'b00,
-		dy_offset40 = 2'b01,
-		dy_offset60 = 2'b10,
-		dy_offset80 = 2'b11,
-		dx_offset10 = 3'b000,
-		dx_offset30 = 3'b001,
-		dx_offset50 = 3'b010,
-		dx_offset70 = 3'b011,
-		dx_offset90 = 3'b100,
-		dx_offset110 = 3'b101,
-		dx_offset130 = 3'b110,
-		dx_offset150 = 3'b111;
-		
-	// FSM to control dy offset
-	always @(posedge clk)
-	begin: dy_offset_FSM
-		case(current_dy_state)
-			dy_offset20: next_dy_state = next_row ? dy_offset40 : dy_offset20;
-			dy_offset40: next_dy_state = next_row ? dy_offset60 : dy_offset40;
-			dy_offset60: next_dy_state = next_row ? dy_offset80 : dy_offset60;
-			dy_offset80: next_dy_state = next_row ? dy_offset20 : dy_offset80;
-			default: next_dy_state = dy_offset20;
-		endcase
-	end
-	
-	always @(posedge clk)
-	begin: dy_state_transitions
-		if (!reset)
-			current_dy_state <= dy_offset20;
-		else
-			current_dy_state <= next_dy_state;
-	end
-	
-	always @(*)
-	begin: dy_signals
-		case(current_dy_state)
-			dy_offset20: dy <= 7'd20;
-			dy_offset40: dy <= 7'd40;
-			dy_offset60: dy <= 7'd60;
-			dy_offset80: dy <= 7'd80;
-			default: dy <= 7'd20;
-		endcase
-	end
-	
-	// FSM to control dx offset it takes 4 cycles of dy to go to next dx
-	always @(posedge clk)
-	begin: dx_offset_FSM
-		case(current_dx_state)
-			dx_offset10: next_dx_state = next_col ? dx_offset30 : dx_offset10;
-			dx_offset30: next_dx_state = next_col ? dx_offset50 : dx_offset30;
-			dx_offset50: next_dx_state = next_col ? dx_offset70 : dx_offset50;
-			dx_offset70: next_dx_state = next_col ? dx_offset90 : dx_offset70;
-			dx_offset90: next_dx_state = next_col ? dx_offset110 : dx_offset90;
-			dx_offset110: next_dx_state = next_col ? dx_offset130 : dx_offset110;
-			dx_offset130: next_dx_state = next_col ? dx_offset150 : dx_offset130;
-			dx_offset150: next_dx_state = next_col ? dx_offset10 : dx_offset150;
-			default: next_dx_state = dx_offset10;
-		endcase
-	end
-	
-	always @(posedge clk)
-	begin: dx_state_transitions
-		if (!reset)
-			current_dx_state <= dx_offset10;
-		else
-			current_dx_state <= next_dx_state;
-	end
-
-	always @(*)
-	begin: dx_signals
-		case(current_dx_state)
-			dx_offset10: dx <= 8'd10;
-			dx_offset30: dx <= 8'd30;
-			dx_offset50: dx <= 8'd50;
-			dx_offset70: dx <= 8'd70;
-			dx_offset90: dx <= 8'd90;
-			dx_offset110: dx <= 8'd110;
-			dx_offset130: dx <= 8'd130;
-			dx_offset150: dx <= 8'd150;
-			default: dx <= 8'd10;
-		endcase
-	end
-*/
 	
 	localparam square1 = 5'd0,
 		square2 = 5'd1,
@@ -259,8 +530,8 @@ module vga_counters(
 	3	 7	  11	 15	19		23		27		31
 	4	 8	  12	 16	20		24		28		32
 	*/
-	always @(posedge clk)
-	begin
+	always @(*)
+	begin: square_state_table
 		case(current_square)
 			square1: next_square = count_zero ? square2 : square1;
 			square2: next_square = count_zero ? square3 : square2;

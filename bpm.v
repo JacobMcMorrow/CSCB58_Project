@@ -6,7 +6,6 @@ module bpm( // 2 en signals per beat. Quarter and eighth notes will alternate
 	input reset,
 	input [7:0] bpm // this may need 1 more bit
 	);
-	// currently to use, set go to 1 and then hit reset to set bpm
 	
 	reg [8:0] beat;
 	initial beat = 8'd120; // avoid dividing by 0

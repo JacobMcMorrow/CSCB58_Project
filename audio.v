@@ -46,12 +46,12 @@ module audio(
 			if(reset)
 				begin
 					audio_reset <= 1'b0;
-					reset_count = 0;
+					reset_count <= 0;
 				end
 			else if(reset_count == 1023)
 				audio_reset <= 1'b1;
 			else
-				reset_count = reset_count + 1;
+				reset_count <= reset_count + 1;
 	end
 
 	assign read_audio_in = audio_in_available & audio_out_allowed;
@@ -59,8 +59,8 @@ module audio(
 
 	always @(mix_down, read_audio_in, write_audio_out)
 		begin
-			right_channel_audio_out = mix_down;
-			left_channel_audio_out = mix_down;
+			right_channel_audio_out <= right_channel_audio_out + mix_down;
+			left_channel_audio_out <= left_channel_audio_out + mix_down;
 	end
 
 	Audio_Controller Audio_Controller(
