@@ -642,107 +642,107 @@ module vga_counters(
 				dx <= 8'd50;
 				dy <= 7'd80;
 			end
-			square9: begin // col 4
+			square13: begin // col 4
 				square_number <= 5'd12;
 				dx <= 8'd70;
 				dy <= 7'd20;
 			end
-			square10: begin
+			square14: begin
 				square_number <= 5'd13;
 				dx <= 8'd70;
 				dy <= 7'd40;
 			end
-			square11: begin
+			square15: begin
 				square_number <= 5'd14;
 				dx <= 8'd70;
 				dy <= 7'd60;
 			end
-			square12: begin
+			square16: begin
 				square_number <= 5'd15;
 				dx <= 8'd70;
 				dy <= 7'd80;
 			end
-			square9: begin // col 5
+			square17: begin // col 5
 				square_number <= 5'd16;
 				dx <= 8'd90;
 				dy <= 7'd20;
 			end
-			square10: begin
+			square18: begin
 				square_number <= 5'd17;
 				dx <= 8'd90;
 				dy <= 7'd40;
 			end
-			square11: begin
+			square19: begin
 				square_number <= 5'd18;
 				dx <= 8'd90;
 				dy <= 7'd60;
 			end
-			square12: begin
+			square20: begin
 				square_number <= 5'd19;
 				dx <= 8'd90;
 				dy <= 7'd80;
 			end
-			square9: begin // col 6
+			square21: begin // col 6
 				square_number <= 5'd20;
 				dx <= 8'd110;
 				dy <= 7'd20;
 			end
-			square10: begin
+			square22: begin
 				square_number <= 5'd21;
 				dx <= 8'd110;
 				dy <= 7'd40;
 			end
-			square11: begin
+			square23: begin
 				square_number <= 5'd22;
 				dx <= 8'd110;
 				dy <= 7'd60;
 			end
-			square12: begin
+			square24: begin
 				square_number <= 5'd23;
 				dx <= 8'd110;
 				dy <= 7'd80;
 			end
-			square9: begin // col 7
+			square25: begin // col 7
 				square_number <= 5'd24;
 				dx <= 8'd130;
 				dy <= 7'd20;
 			end
-			square10: begin
+			square26: begin
 				square_number <= 5'd25;
 				dx <= 8'd130;
 				dy <= 7'd40;
 			end
-			square11: begin
+			square27: begin
 				square_number <= 5'd26;
 				dx <= 8'd130;
 				dy <= 7'd60;
 			end
-			square12: begin
+			square28: begin
 				square_number <= 5'd27;
 				dx <= 8'd130;
 				dy <= 7'd80;
 			end
-			square9: begin // col 8
+			square29: begin // col 8
 				square_number <= 5'd28;
 				dx <= 8'd150;
 				dy <= 7'd20;
 			end
-			square10: begin
+			square30: begin
 				square_number <= 5'd29;
 				dx <= 8'd150;
 				dy <= 7'd40;
 			end
-			square11: begin
+			square31: begin
 				square_number <= 5'd30;
 				dx <= 8'd150;
 				dy <= 7'd60;
 			end
-			square12: begin
+			square32: begin
 				square_number <= 5'd31;
 				dx <= 8'd150;
 				dy <= 7'd80;
 			end
-			default: begin // default to square 1
+			default: begin
 				square_number <= 5'd0;
 				dx <= 8'd10;
 				dy <= 7'd20;
