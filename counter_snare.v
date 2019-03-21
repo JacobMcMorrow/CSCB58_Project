@@ -17,7 +17,7 @@ module counter_snare(count, clk, en, go);
 	// check if counting or paused
 	always @(posedge clk) begin
 		if (go) begin
-			current_state <= COUNT;
+			state <= COUNT;
 			count <= 15'b0;
 		end
 		else begin

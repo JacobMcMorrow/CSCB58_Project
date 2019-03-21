@@ -21,7 +21,7 @@ module counter_kick(count, clk, en, go);
 			count <= 16'b0;
 		end
 		else begin
-			state <= Next_state;
+			state <= next_state;
 			count <= count + cnt_enable;
 		end
 	end

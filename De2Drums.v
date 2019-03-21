@@ -21,8 +21,8 @@ module De2Drums(
 	output [9:0] VGA_R,
 	output [9:0] VGA_G,
 	output [9:0] VGA_B,
-	inout AUD_XCK,
-	inout AUD_DACDAT,
+	inout AUD_BCLK,
+	inout AUD_ADCLRCK,
 	inout AUD_DACLRCK,
 	inout I2C_SDAT
 	);
