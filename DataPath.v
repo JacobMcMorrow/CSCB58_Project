@@ -15,7 +15,7 @@ module datapath(
 	input ld_bpm,
 	input clk,
 	input slow_clk, // slowed clock from bpm module
-	input [2:0] timing, // 3 bit timing
+	input [3:0] timing, // 3 bit timing
 	input [7:0] sel, // this is our select for bpm/drum beat depending on state
 	input reset, 
 	input play
@@ -53,49 +53,49 @@ module datapath(
 	begin: instrument_timing
 		if (play)
 		begin
-			if (timing == 3'b000) begin
+			if (timing == 4'b0001) begin
 				ins1_out <= ins1[0];
 				ins2_out <= ins2[0];
 				ins3_out <= ins3[0];
 				ins4_out <= ins4[0];
 			end
-			if (timing == 3'b001) begin
+			if (timing == 4'b0010) begin
 				ins1_out <= ins1[1];
 				ins2_out <= ins2[1];
 				ins3_out <= ins3[1];
 				ins4_out <= ins4[1];
 			end
-			if (timing == 3'b010) begin
+			if (timing == 4'b0011) begin
 				ins1_out <= ins1[2];
 				ins2_out <= ins2[2];
 				ins3_out <= ins3[2];
 				ins4_out <= ins4[2];
 			end
-			if (timing == 3'b011) begin
+			if (timing == 4'b0100) begin
 				ins1_out <= ins1[3];
 				ins2_out <= ins2[3];
 				ins3_out <= ins3[3];
 				ins4_out <= ins4[3];
 			end
-			if (timing == 3'b100) begin
+			if (timing == 4'b0101) begin
 				ins1_out <= ins1[4];
 				ins2_out <= ins2[4];
 				ins3_out <= ins3[4];
 				ins4_out <= ins4[4];
 			end
-			if (timing == 3'b101) begin
+			if (timing == 4'b0110) begin
 				ins1_out <= ins1[5];
 				ins2_out <= ins2[5];
 				ins3_out <= ins3[5];
 				ins4_out <= ins4[5];
 			end
-			if (timing == 3'b110) begin
+			if (timing == 4'b0111) begin
 				ins1_out <= ins1[6];
 				ins2_out <= ins2[6];
 				ins3_out <= ins3[6];
 				ins4_out <= ins4[6];
 			end
-			if (timing == 3'b111) begin
+			if (timing == 4'b1000) begin
 				ins1_out <= ins1[7];
 				ins2_out <= ins2[7];
 				ins3_out <= ins3[7];

@@ -13,6 +13,14 @@ module De2Drums(
 	output AUD_XCK,
 	output AUD_DACDAT,
 	output I2C_SCLK,
+	output VGA_CLK,
+	output VGA_HS,
+	output VGA_VS,
+	output VGA_BLANK_N,
+	output VGA_SYNC_N,
+	output [9:0] VGA_R,
+	output [9:0] VGA_G,
+	output [9:0] VGA_B,
 	inout AUD_XCK,
 	inout AUD_DACDAT,
 	inout AUD_DACLRCK,
@@ -22,7 +30,7 @@ module De2Drums(
 	// for testing, set go to 1 and reset to store bpm
 	wire bpm_en, slowed_clock;
 	wire [7:0] ins1, ins2, ins3, ins4, set_bpm;
-	wire [2:0] timing;
+	wire [3:0] timing;
 	wire ld_ins1, ld_ins2, ld_ins3, ld_ins4, ld_bpm, play;
 	// sample outputs
 	wire [7:0] snare_out, kick_out, hat_out, clap_out;
@@ -60,10 +68,6 @@ module De2Drums(
 		.ins2_out(ins2_out),
 		.ins3_out(ins3_out),
 		.ins4_out(ins4_out),
-		 // .ins1_out(LEDR[5]),
-		 // .ins2_out(LEDR[6]),
-		 // .ins3_out(LEDR[7]),
-		 // .ins4_out(LEDR[8]),
 		.set_bpm(set_bpm),
 		.ins1(ins1), // testing
 		.ins2(ins2), // testing
@@ -81,6 +85,27 @@ module De2Drums(
 		.reset(KEY[1]),
 		.play(play)
 		);
+		
+	vga_signals
+	(
+		.clk(CLOCK_50),						//	On Board 50 MHz
+		.play(play),
+		.reset(KEY[1]),
+		.ins1(ins1),
+		.ins2(ins2),
+		.ins3(ins3),
+		.ins4(ins4),
+		.timing(timing),
+		// These outputs will be passed directly to top module's output
+		.VGA_CLK(VGA_CLK),   						//	VGA Clock
+		.VGA_HS(VGA_HS),								//	VGA H_SYNC
+		.VGA_VS(VGA_VS),								//	VGA V_SYNC
+		.VGA_BLANK_N(VGA_BLANK_N),					//	VGA BLANK
+		.VGA_SYNC_N(VGA_SYNC_N),					//	VGA SYNC
+		.VGA_R(VGA_R),   								//	VGA Red[9:0]
+		.VGA_G(VGA_G),	 								//	VGA Green[9:0]
+		.VGA_B(VGA_B)   								//	VGA Blue[9:0]
+	);
 	
 	// for testing only to see what instrument we are inputting
 	reg [3:0] hex0_in;
@@ -108,31 +133,25 @@ module De2Drums(
 	
 	always @(timing)
 	begin
-		if (timing == 3'b000)
+		if (timing == 4'b0001)
 			hex1_in = 4'h1;
-		else if (timing == 3'b001)
+		else if (timing == 4'b0010)
 			hex1_in = 4'h2;
-		else if (timing == 3'b010)
+		else if (timing == 4'b0011)
 			hex1_in = 4'h3;
-		else if (timing == 3'b011)
+		else if (timing == 4'b0100)
 			hex1_in = 4'h4;
-		else if (timing == 3'b100)
+		else if (timing == 4'b0101)
 			hex1_in = 4'h5;
-		else if (timing == 3'b101)
+		else if (timing == 4'b0110)
 			hex1_in = 4'h6;
-		else if (timing == 3'b110)
+		else if (timing == 4'b0111)
 			hex1_in = 4'h7;
-		else if (timing == 3'b111)
+		else if (timing == 4'b1000)
 			hex1_in = 4'h8;
 		else
 			hex1_in = 4'h0;
 	end
-	
-	// debugging for ins 1-4
-	hex_display hex_4(ins1, HEX4);
-	hex_display hex_5(ins2, HEX5);
-	hex_display hex_6(ins3, HEX6);
-	hex_display hex_7(ins4, HEX7);
 
 	// instantiate drum modules
 	snare snare(
