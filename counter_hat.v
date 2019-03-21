@@ -21,28 +21,28 @@ module counter_hat(count, clk, en, go);
 			count <= 14'b0;
 		end
 		else begin
-			state <= PAUSE;
+			state <= next_state;
 			count <= count + cnt_enable;
 		end
 	end
 
 	// counting block
 	always @(state, count, en, go) begin
-		cnt_enable = 0;
+		cnt_enable <= 0;
 		case(state)
 			// there's got to be a way to clean this up
 			COUNT:
 				if (count == MAXCOUNT) begin
-					next_state = PAUSE;
-					cnt_enable = 0;
+					next_state <= PAUSE;
+					cnt_enable <= 0;
 				end
 				else begin
-					next_state = COUNT;
-					cnt_enable = en;
+					next_state <= COUNT;
+					cnt_enable <= en;
 				end
 			PAUSE: begin
-				cnt_enable = 0;
-				next_state = go ? COUNT : PAUSE;
+				next_state <= go ? COUNT : PAUSE;
+				cnt_enable <= 0;
 			end
 		endcase
 	end

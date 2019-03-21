@@ -39,6 +39,12 @@ module audio(
 	reg [31:0] left_channel_audio_out;
 	reg [31:0] right_channel_audio_out;
 
+	// if first test doesn't work, uncomment and replace equivalent
+	/*
+	wire [31:0] left_channel_audio_out;
+	wire [31:0] right_channel_audio_out;
+	*/
+
 	assign reset = ~KEY[1];
 
 	always @(posedge CLOCK_50)
@@ -46,22 +52,29 @@ module audio(
 			if(reset)
 				begin
 					audio_reset <= 1'b0;
-					reset_count = 0;
+					reset_count <= 0;
 				end
 			else if(reset_count == 1023)
 				audio_reset <= 1'b1;
 			else
-				reset_count = reset_count + 1;
+				reset_count <= reset_count + 1;
 	end
 
 	assign read_audio_in = audio_in_available & audio_out_allowed;
 	assign write_audio_out = audio_in_available & audio_out_allowed;
 
+	// comment out on second attempt
 	always @(mix_down, read_audio_in, write_audio_out)
 		begin
-			right_channel_audio_out = mix_down;
-			left_channel_audio_out = mix_down;
+			right_channel_audio_out <= right_channel_audio_out + mix_down;
+			left_channel_audio_out <= left_channel_audio_out + mix_down;
 	end
+
+	// uncomment on second attempt
+	/*
+	left_channel_audio_out = left_channel_audio_out + mix_down;
+	right_channel_audio_out = right_channel_audio_out + mix_down;
+	*/
 
 	Audio_Controller Audio_Controller(
 		.CLOCK_50(CLOCK_50),
