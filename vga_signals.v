@@ -38,7 +38,6 @@ module vga_signals
 	output	[9:0]	VGA_R;   				//	VGA Red[9:0]
 	output	[9:0]	VGA_G;	 				//	VGA Green[9:0]
 	output	[9:0]	VGA_B;   				//	VGA Blue[9:0]
-	output [4:0] square_number;
 
 	reg [2:0] colour; // colour of each square
 	wire [3:0] square_offset; // 4 bit counter used to draw our 4 pixel square
