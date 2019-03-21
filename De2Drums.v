@@ -2,13 +2,21 @@ module De2Drums(
 	input [7:0] SW,
 	input CLOCK_50,
 	input [3:0] KEY,
+	input AUD_ADCDAT,
 	output [8:0] LEDR,
 	output [6:0] HEX0, 
 	output [6:0] HEX1,
 	output [6:0] HEX4,
 	output [6:0] HEX5,
 	output [6:0] HEX6,
-	output [6:0] HEX7
+	output [6:0] HEX7,
+	output AUD_XCK,
+	output AUD_DACDAT,
+	output I2C_SCLK,
+	inout AUD_XCK,
+	inout AUD_DACDAT,
+	inout AUD_DACLRCK,
+	inout I2C_SDAT
 	);
 	
 	// for testing, set go to 1 and reset to store bpm
@@ -163,8 +171,16 @@ module De2Drums(
 	
 	// instantiate audio
 	audio audio(
+		.AUD_XCK(AUD_XCK),
+		.AUD_DACDAT(AUD_DACDAT),
+		.I2C_SCLK(I2C_SCLK),
 		.CLOCK_50(CLOCK_50),
-		.mix_down(mix_down)
+		.KEY(KEY),
+		.mix_down(mix_down),
+		.AUD_BCLK(AUD_BCLK),
+		.AUD_ADCLRCK(AUD_ADCLRCK),
+		.AUD_DACLRCK(AUD_DACLRCK),
+		.I2C_SDAT(I2C_SDAT)
 		);
 
 endmodule

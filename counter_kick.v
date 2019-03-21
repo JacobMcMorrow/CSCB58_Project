@@ -2,37 +2,37 @@ module counter_kick(count, clk, en, go);
 	output [15:0] count;
 	input  clk, en, go;
 
-	reg [15:0] cnt;
+	reg [15:0] count;
 	reg state, next_state, cnt_enable;
 
 	// define parameters
 	// max count
 	parameter MAXCOUNT = 16'd43840;
 	// counting state
-	parameter COUNT = 0;
+	parameter COUNT = 1'b0;
 	// pause state
-	parameter PAUSE = 1;
+	parameter PAUSE = 1'b1;
 
 	// double check the begin block set up for always
 	// check if counting or paused
 	always @(posedge clk) begin
 		if (go) begin
 			state <= COUNT;
-			cnt <= 15'b0;
+			count <= 16'b0;
 		end
 		else begin
 			state <= PAUSE;
-			cnt <= cnt + cnt_enable;
+			count <= count + cnt_enable;
 		end
 	end
 
 	// counting block
-	always @(state, cnt, en, go) begin
+	always @(state, count, en, go) begin
 		cnt_enable = 0;
 		case(state)
 			// there's got to be a way to clean this up
 			COUNT:
-				if (cnt == MAXCOUNT) begin
+				if (count == MAXCOUNT) begin
 					next_state = PAUSE;
 					cnt_enable = 0;
 				end
