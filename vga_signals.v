@@ -16,8 +16,7 @@ module vga_signals
 		VGA_SYNC_N,						//	VGA SYNC
 		VGA_R,   						//	VGA Red[9:0]
 		VGA_G,	 						//	VGA Green[9:0]
-		VGA_B,   							//	VGA Blue[9:0]
-		square_number // TESTING
+		VGA_B   							//	VGA Blue[9:0]
 	);
 
 	input	clk;				//	50 MHz
@@ -45,7 +44,7 @@ module vga_signals
 	wire [3:0] square_offset; // 4 bit counter used to draw our 4 pixel square
 	wire [7:0] dx_offset; // x offset for each square
 	wire [6:0] dy_offset; // y offset for each square
-	//wire [4:0] square_number; // what square are we drawing
+	wire [4:0] square_number; // what square are we drawing
 	reg [7:0] x; // final x value for vga adapter
 	reg [6:0] y; // final y value for vga adapter
 
