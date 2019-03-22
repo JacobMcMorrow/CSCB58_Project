@@ -154,14 +154,14 @@ module De2Drums(
 	end
 
 	// instantiate drum modules
-	snare snare(
-		.out(snare_out),
+	kick kick(
+		.out(kick_out),
 		.clk(CLOCK_50),
 		.en(play),
 		.go(ins1_out)
 		);
-	kick kick(
-		.out(kick_out),
+	snare snare(
+		.out(snare_out),
 		.clk(CLOCK_50),
 		.en(play),
 		.go(ins2_out)
