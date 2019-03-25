@@ -154,29 +154,36 @@ module De2Drums(
 	end
 
 	// instantiate drum modules
-	kick kick(
+	sample kick(
 		.out(kick_out),
 		.clk(CLOCK_50),
 		.en(play),
-		.go(ins1_out)
+		.go(ins1_out),
+		.sel(2'b00)
 		);
-	snare snare(
+
+	sample snare(
 		.out(snare_out),
 		.clk(CLOCK_50),
 		.en(play),
-		.go(ins2_out)
+		.go(ins2_out),
+		.sel(2'b01)
 		);
-	hat hat(
+
+	sample hat(
 		.out(hat_out),
 		.clk(CLOCK_50),
 		.en(play),
-		.go(ins3_out)
+		.go(ins3_out),
+		.sel(2'b10)
 		);
-	clap clap(
+
+	sample clap(
 		.out(clap_out),
 		.clk(CLOCK_50),
 		.en(play),
-		.go(ins4_out)
+		.go(ins4_out),
+		.sel(2'b11)
 		);
 	
 	// instantiate mixer
