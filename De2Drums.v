@@ -192,7 +192,8 @@ module De2Drums(
 		.audio0(snare_out),
 		.audio1(kick_out),
 		.audio2(hat_out),
-		.audio3(clap_out)
+		.audio3(clap_out),
+		.clk(CLOCK_50)
 		);
 	
 	// instantiate audio

@@ -16,10 +16,11 @@ module sample(out, clk, en, go, sel);
 	// sample select
 	always @(*) begin
 		case(sel)
-			2'b00: assign out = kick_out;
-			2'b01: assign out = snare_out;
-			2'b10: assign out = hat_out;
-			2'b11: assign out = clap_out;
+			2'b00: out = kick_out;
+			2'b01: out = snare_out;
+			2'b10: out = hat_out;
+			2'b11: out = clap_out;
+			default: out = 8'b00000000;
 	end
 
 endmodule
