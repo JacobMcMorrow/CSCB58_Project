@@ -152,7 +152,8 @@ module De2Drums(
 		else
 			hex1_in = 4'h0;
 	end
-/*
+
+	/*
 	// instantiate drum modules
 	kick kick(
 		.out(kick_out),
@@ -187,6 +188,7 @@ module De2Drums(
 		.audio2(hat_out),
 		.audio3(clap_out)
 		);
+
 	
 	// instantiate audio
 	audio audio(
@@ -201,5 +203,6 @@ module De2Drums(
 		.AUD_DACLRCK(AUD_DACLRCK),
 		.I2C_SDAT(I2C_SDAT)
 		);
-*/
+		*/
+
 endmodule

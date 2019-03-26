@@ -7,7 +7,7 @@ module counter(count, clk, en, go);
 
 	// define parameters
 	// max count
-	parameter MAXCOUNT = 13'd8192;
+	parameter MAXCOUNT = 13'd8191;
 	// counting state
 	parameter COUNT = 1'b0;
 	// pause state
