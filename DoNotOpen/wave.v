@@ -61,6 +61,8 @@ module wave #(
       dout_tmp = dout_tmp & noise_dout;
     if (en_triangle)
       dout_tmp = dout_tmp & triangle_dout;
+		if (en_sine)
+			dout_tmp = dout_tmp & sine_dout)
   end
 
   // convert dout value to a signed value
