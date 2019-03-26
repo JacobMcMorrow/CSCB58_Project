@@ -16,6 +16,7 @@ module wave #(
   output wire sync_trigger_out,
 	input en_noise,
 	input en_triangle,
+	input en_sine
 	);
 
 	reg [ACCUMULATOR_BITS-1:0] accumulator;
@@ -65,4 +66,4 @@ module wave #(
   // convert dout value to a signed value
 	assign dout = dout_tmp ^ (2**(OUTPUT_BITS-1));
 
-endmodule	
+endmodule
