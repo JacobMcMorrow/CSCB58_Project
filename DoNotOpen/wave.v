@@ -15,8 +15,8 @@ module wave #(
   output wire accumulator_msb,
   output wire sync_trigger_out,
 	input en_noise,
-	input en_triangle,
-	input en_sine
+	input en_pulse,
+	input en_triangle
 	);
 
 	reg [ACCUMULATOR_BITS-1:0] accumulator;
@@ -39,6 +39,18 @@ module wave #(
     .en_ringmod(en_ringmod),
     .ringmod_source(ringmod_source)
     );
+
+  wire [OUTPUT_BITS-1:0] pulse_dout;
+	tone_generator_pulse #(
+		.ACCUMULATOR_BITS(ACCUMULATOR_BITS),
+    .OUTPUT_BITS(OUTPUT_BITS),
+    .PULSEWIDTH_BITS(PULSEWIDTH_BITS)
+    )
+		pulse (
+    .accumulator(accumulator),
+    .dout(pulse_dout),
+    .pulse_width(pulse_width)
+		);
 
 	reg [OUTPUT_BITS-1:0] dout_tmp;
 

@@ -1,4 +1,4 @@
-module multi_channel_mixer #(
+module synth_mixer #(
   parameter DATA_BITS = 12,
   parameter ACTIVE_CHANNELS = 2
 	)
