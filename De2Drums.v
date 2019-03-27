@@ -3,13 +3,13 @@ module De2Drums(
 	input CLOCK_50,
 	input [3:0] KEY,
 	input AUD_ADCDAT,
-	output [8:0] LEDR,
+	//output [8:0] LEDR,
 	output [6:0] HEX0, 
 	output [6:0] HEX1,
-	output [6:0] HEX4,
-	output [6:0] HEX5,
-	output [6:0] HEX6,
-	output [6:0] HEX7,
+	//output [6:0] HEX4,
+	//output [6:0] HEX5,
+	//output [6:0] HEX6,
+	//output [6:0] HEX7,
 	output AUD_XCK,
 	output AUD_DACDAT,
 	output I2C_SCLK,
@@ -152,6 +152,7 @@ module De2Drums(
 			hex1_in = 4'h0;
 	end
 
+	/*
 	// instantiate drum modules
 	sample kick(
 		.out(kick_out),
@@ -194,6 +195,7 @@ module De2Drums(
 		.audio3(clap_out),
 		.clk(CLOCK_50)
 		);
+
 	
 	// instantiate audio
 	audio audio(
@@ -208,5 +210,6 @@ module De2Drums(
 		.AUD_DACLRCK(AUD_DACLRCK),
 		.I2C_SDAT(I2C_SDAT)
 		);
+		*/
 
 endmodule
