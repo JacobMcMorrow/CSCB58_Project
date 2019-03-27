@@ -26,6 +26,11 @@ module datapath(
 	// instrument loading block
 	always @(*)  // currently inferring latches, do I want this to be synchronous? Leaning towards no.
 	begin: instrument_loading
+		ins1 <= 8'b0;
+		ins2 <= 8'b0;
+		ins3 <= 8'b0;
+		ins4 <= 8'b0;
+		set_bpm <= 8'b0;
 		if (!reset) 
 		begin
 			ins1 <= 8'b0;
@@ -51,6 +56,10 @@ module datapath(
 	// instrument timing block
 	always @(*)
 	begin: instrument_timing
+		ins1_out <= 1'b0;
+		ins2_out <= 1'b0;
+		ins3_out <= 1'b0;
+		ins4_out <= 1'b0;
 		if (play)
 		begin
 			if (timing == 4'b0001) begin
@@ -101,13 +110,13 @@ module datapath(
 				ins3_out <= ins3[7];
 				ins4_out <= ins4[7];
 			end
-		end
-		else // if we are not playing, set all output to 0
-		begin // alternatively I could have just ignored all output through another parameter.
-			ins1_out <= 1'b0;
-			ins2_out <= 1'b0;
-			ins3_out <= 1'b0;
-			ins4_out <= 1'b0;
+			else
+			begin
+				ins1_out <= 1'b0;
+				ins2_out <= 1'b0;
+				ins3_out <= 1'b0;
+				ins4_out <= 1'b0;
+			end
 		end
 	end
 endmodule

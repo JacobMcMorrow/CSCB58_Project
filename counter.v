@@ -44,6 +44,7 @@ module counter(count, clk, en, go);
 				next_state <= go ? COUNT : PAUSE;
 				cnt_enable <= 0;
 			end
+			default: next_state <= PAUSE;
 		endcase
 	end
 

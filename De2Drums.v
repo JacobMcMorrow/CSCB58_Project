@@ -86,8 +86,7 @@ module De2Drums(
 		.play(play)
 		);
 		
-	vga_signals
-	(
+	vga_signals v1(
 		.clk(CLOCK_50),						//	On Board 50 MHz
 		.play(play),
 		.reset(KEY[1]),
@@ -155,29 +154,36 @@ module De2Drums(
 
 	/*
 	// instantiate drum modules
-	kick kick(
+	sample kick(
 		.out(kick_out),
 		.clk(CLOCK_50),
 		.en(play),
-		.go(ins1_out)
+		.go(ins1_out),
+		.sel(2'b00)
 		);
-	snare snare(
+
+	sample snare(
 		.out(snare_out),
 		.clk(CLOCK_50),
 		.en(play),
-		.go(ins2_out)
+		.go(ins2_out),
+		.sel(2'b01)
 		);
-	hat hat(
+
+	sample hat(
 		.out(hat_out),
 		.clk(CLOCK_50),
 		.en(play),
-		.go(ins3_out)
+		.go(ins3_out),
+		.sel(2'b10)
 		);
-	clap clap(
+
+	sample clap(
 		.out(clap_out),
 		.clk(CLOCK_50),
 		.en(play),
-		.go(ins4_out)
+		.go(ins4_out),
+		.sel(2'b11)
 		);
 	
 	// instantiate mixer
@@ -186,7 +192,8 @@ module De2Drums(
 		.audio0(snare_out),
 		.audio1(kick_out),
 		.audio2(hat_out),
-		.audio3(clap_out)
+		.audio3(clap_out),
+		.clk(CLOCK_50)
 		);
 
 	
