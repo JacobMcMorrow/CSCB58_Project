@@ -1,5 +1,5 @@
 module sample(out, clk, en, go, sel);
-	output [7:0] out;
+	output reg [7:0] out;
 	input [2:0] sel;
 	input clk, en, go;
 
@@ -8,10 +8,10 @@ module sample(out, clk, en, go, sel);
 
 	counter counter(.count(address), .clk(clk), .en(en), .go(go));
 
-	kick_rom kick(.adress(address), .clock(clk), .q(kick_out));
-	snare_rom snare(.adress(address), .clock(clk), .q(snare_out));
-	hat_rom hat(.adress(address), .clock(clk), .q(hat_out));
-	clap_rom clap(.adress(address), .clock(clk), .q(clap_out));
+	kick_rom kick(.address(address), .clock(clk), .q(kick_out));
+	snare_rom snare(.address(address), .clock(clk), .q(snare_out));
+	hat_rom hat(.address(address), .clock(clk), .q(hat_out));
+	clap_rom clap(.address(address), .clock(clk), .q(clap_out));
 
 	// sample select
 	always @(*) begin
@@ -21,6 +21,7 @@ module sample(out, clk, en, go, sel);
 			2'b10: out = hat_out;
 			2'b11: out = clap_out;
 			default: out = 8'b00000000;
+		endcase
 	end
 
 endmodule

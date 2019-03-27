@@ -5,7 +5,7 @@ module adder_two(out, in0, in1);
 	wire fa0_cout, fa1_cout, fa2_cout, fa3_cout, fa4_cout, fa5_cout, fa6_cout, 
 		 fa7_cout, fa8_cout, fa9_cout, cin;
 
-	assign cin = 1'b10;
+	assign cin = 1'b0;
 
 	full_adder fa0(fa0_cout, out[0], in0[0], in1[0], cin);
 	full_adder fa1(fa1_cout, out[1], in0[1], in1[1], fa0_cout);

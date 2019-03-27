@@ -86,8 +86,7 @@ module De2Drums(
 		.play(play)
 		);
 		
-	vga_signals
-	(
+	vga_signals v1(
 		.clk(CLOCK_50),						//	On Board 50 MHz
 		.play(play),
 		.reset(KEY[1]),

@@ -23,7 +23,7 @@ module adder_zero(out, in0, in1, clk);
 		.a(in0[1]),
 		.b(in1[1]),
 		.cin(fa0_cout),
-		.clk)clk)
+		.clk(clk)
 		);
 
 	full_adder fa2(
@@ -59,7 +59,7 @@ module adder_zero(out, in0, in1, clk);
 		.a(in0[5]),
 		.b(in1[5]),
 		.cin(fa4_cout),
-		.clkclk)
+		.clk(clk)
 		);
 
 	full_adder fa6(
