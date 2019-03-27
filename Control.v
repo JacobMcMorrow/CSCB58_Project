@@ -12,33 +12,38 @@ module control(
 	input go
 	);
 	
-	reg [6:0] current_state, next_state, curr_loop_state, next_loop_state;
+	reg [3:0] current_state, next_state, curr_loop_state, next_loop_state;
 	
-	localparam S_LOAD_INS1 = 7'b000_0000,
-		S_LOAD_INS1_WAIT = 7'b000_0001,
-		S_LOAD_INS2 = 7'b000_0011,
-		S_LOAD_INS2_WAIT = 7'b000_0111,
-		S_LOAD_INS3 = 7'b000_1111,
-		S_LOAD_INS3_WAIT = 7'b001_1111,
-		S_LOAD_INS4 = 7'b011_1111,
-		S_LOAD_INS4_WAIT = 7'b111_1111,
-		S_LOAD_BPM = 7'b111_1110,
-		S_LOAD_BPM_WAIT = 7'b111_1100,
-		S_PLAY = 7'b111_1000,
+	localparam S_LOAD_NEUTRAL = 4'd0,
+		S_LOAD_NEUTRAL_WAIT = 4'd1,
+		S_LOAD_INS1 = 4'd2,
+		S_LOAD_INS1_WAIT = 4'd3,
+		S_LOAD_INS2 = 4'd4,
+		S_LOAD_INS2_WAIT = 4'd5,
+		S_LOAD_INS3 = 4'd6,
+		S_LOAD_INS3_WAIT = 4'd7,
+		S_LOAD_INS4 = 4'd8,
+		S_LOAD_INS4_WAIT = 4'd9,
+		S_LOAD_BPM = 4'd10,
+		S_LOAD_BPM_WAIT = 4'd11,
+		S_PLAY = 4'd12,
 		//
-		S_LOOP_WAIT = 7'b000_0000,
-		S_QUARTER_NOTE1 = 7'b000_0001,
-		S_EIGHTH_NOTE1 = 7'b000_0011,
-		S_QUARTER_NOTE2 = 7'b000_0110,
-		S_EIGHTH_NOTE2 = 7'b000_1100,
-		S_QUARTER_NOTE3 = 7'b001_1000,
-		S_EIGHTH_NOTE3 = 7'b011_0000,
-		S_QUARTER_NOTE4 = 7'b110_0000,
-		S_EIGHTH_NOTE4 = 7'b100_0001;
+		S_LOOP_WAIT = 4'd0,
+		S_QUARTER_NOTE1 = 4'd1,
+		S_EIGHTH_NOTE1 = 4'd2,
+		S_QUARTER_NOTE2 = 4'd3,
+		S_EIGHTH_NOTE2 = 4'd4,
+		S_QUARTER_NOTE3 = 4'd5,
+		S_EIGHTH_NOTE3 = 4'd6,
+		S_QUARTER_NOTE4 = 4'd7,
+		S_EIGHTH_NOTE4 = 4'd8;
 		
 	always @(*)
 	begin: state_table
 		case (current_state)
+			// neutral state - nothing happens here
+			S_LOAD_NEUTRAL: next_state = go ? S_LOAD_NEUTRAL_WAIT : S_LOAD_NEUTRAL;
+			S_LOAD_NEUTRAL_WAIT: next_state = go ? S_LOAD_NEUTRAL_WAIT : S_LOAD_BPM;
 			// load bpm - note: will have to check to see if we are loading 0
 			S_LOAD_BPM: next_state = go ? S_LOAD_BPM_WAIT : S_LOAD_BPM;
 			S_LOAD_BPM_WAIT: next_state = go ? S_LOAD_BPM_WAIT : S_LOAD_INS1;
@@ -56,7 +61,7 @@ module control(
 			S_LOAD_INS4_WAIT: next_state = go ? S_LOAD_INS4_WAIT : S_PLAY;
 			// loop through the 8 beats indefinitely
 			S_PLAY: next_state = S_PLAY;
-			default: next_state = S_LOAD_BPM;
+			default: next_state = S_LOAD_NEUTRAL;
 		endcase
 	end
 	
@@ -69,6 +74,7 @@ module control(
 		ld_bpm <= 1'b0;
 		play <= 1'b0;
 		case (current_state)
+			S_LOAD_NEUTRAL: play <= 1'b0;
 			S_LOAD_INS1: ld_ins1 <= 1'b1;
 			S_LOAD_INS2: ld_ins2 <= 1'b1;
 			S_LOAD_INS3: ld_ins3 <= 1'b1;
@@ -134,7 +140,7 @@ module control(
 	begin: load_state_transitions
 		if (!reset)
 		begin
-			current_state <= S_LOAD_BPM;
+			current_state <= S_LOAD_NEUTRAL;
 		end
 		else
 			current_state <= next_state;
@@ -142,9 +148,7 @@ module control(
 	
 	always @(posedge slow_clk)
 	begin: loop_state_transitions
-		if (!reset)
-			curr_loop_state <= S_LOOP_WAIT;
-		else if (!play)
+		if (!reset || !play)
 			curr_loop_state <= S_LOOP_WAIT;
 		else
 			curr_loop_state <= next_loop_state;

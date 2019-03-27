@@ -87,20 +87,25 @@ module vga_signals
 	// display colour block
 	always @(*)
 	begin
+		colour <= 3'b000; // default black
 		// timing == 0001
 		if (square_number == 5'd0) // square 1
-			if (ins1[0] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111; // white
+			else if (ins1[0] == 1'b1)
 				if (timing == 4'd1)
-					colour <= 3'b100;
+					colour <= 3'b100; // red
 				else
-					colour <= 3'b010;
+					colour <= 3'b010; // green
 			else
 				if (timing == 4'd1)
-					colour <= 3'b001;
+					colour <= 3'b001; // blue
 				else
-					colour <= 3'b111;
+					colour <= 3'b111; // white
 		else if (square_number == 5'd1) // square 2
-			if (ins2[0] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins2[0] == 1'b1)
 				if (timing == 4'd1)
 					colour <= 3'b100;
 				else
@@ -111,7 +116,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd2) // square 3
-			if (ins3[0] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins3[0] == 1'b1)
 				if (timing == 4'd1)
 					colour <= 3'b100;
 				else
@@ -122,7 +129,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd3) // square 4
-			if (ins4[0] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins4[0] == 1'b1)
 				if (timing == 4'd1)
 					colour <= 3'b100;
 				else
@@ -134,7 +143,9 @@ module vga_signals
 					colour <= 3'b111;
 		// timing == 0010
 		else if (square_number == 5'd4) // square 5
-			if (ins1[1] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins1[1] == 1'b1)
 				if (timing == 4'd2)
 					colour <= 3'b100;
 				else
@@ -145,7 +156,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd5) // square 6
-			if (ins2[1] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins2[1] == 1'b1)
 				if (timing == 4'd2)
 					colour <= 3'b100;
 				else
@@ -156,7 +169,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd6) // square 7
-			if (ins3[1] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b110; 
+			else if (ins3[1] == 1'b1)
 				if (timing == 4'd2)
 					colour <= 3'b100;
 				else
@@ -167,7 +182,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd7) // square 8
-			if (ins4[1] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins4[1] == 1'b1)
 				if (timing == 4'd2)
 					colour <= 3'b100;
 				else
@@ -179,7 +196,9 @@ module vga_signals
 					colour <= 3'b111;
 		// timing == 0011
 		else if (square_number == 5'd8) // square 9
-			if (ins1[2] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b110;
+			else if (ins1[2] == 1'b1)
 				if (timing == 4'd3)
 					colour <= 3'b100;
 				else
@@ -190,7 +209,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd9) // square 10
-			if (ins2[2] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins2[2] == 1'b1)
 				if (timing == 4'd3)
 					colour <= 3'b100;
 				else
@@ -201,7 +222,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd10) // square 11
-			if (ins3[2] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins3[2] == 1'b1)
 				if (timing == 4'd3)
 					colour <= 3'b100;
 				else
@@ -212,7 +235,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd11) // square 12
-			if (ins4[2] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b110;
+			else if (ins4[2] == 1'b1)
 				if (timing == 4'd3)
 					colour <= 3'b100;
 				else
@@ -224,7 +249,9 @@ module vga_signals
 					colour <= 3'b111;
 		// timing == 0100
 		else if (square_number == 5'd12) // square 13
-			if (ins1[3] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins1[3] == 1'b1)
 				if (timing == 4'd4)
 					colour <= 3'b100;
 				else
@@ -235,7 +262,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd13) // square 14
-			if (ins2[3] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins2[3] == 1'b1)
 				if (timing == 4'd4)
 					colour <= 3'b100;
 				else
@@ -246,7 +275,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd14) // square 15
-			if (ins3[3] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins3[3] == 1'b1)
 				if (timing == 4'd4)
 					colour <= 3'b100;
 				else
@@ -257,7 +288,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd15) // square 16
-			if (ins4[3] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b110;
+			else if (ins4[3] == 1'b1)
 				if (timing == 4'd4)
 					colour <= 3'b100;
 				else
@@ -269,7 +302,9 @@ module vga_signals
 					colour <= 3'b111;
 		// timing == 0101
 		else if (square_number == 5'd16) // square 17
-			if (ins1[4] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins1[4] == 1'b1)
 				if (timing == 4'd5)
 					colour <= 3'b100;
 				else
@@ -280,7 +315,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd17) // square 18
-			if (ins2[4] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins2[4] == 1'b1)
 				if (timing == 4'd5)
 					colour <= 3'b100;
 				else
@@ -291,7 +328,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd18) // square 19
-			if (ins3[4] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins3[4] == 1'b1)
 				if (timing == 4'd5)
 					colour <= 3'b100;
 				else
@@ -302,7 +341,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd19) // square 20
-			if (ins4[4] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b110;
+			else if (ins4[4] == 1'b1)
 				if (timing == 4'd5)
 					colour <= 3'b100;
 				else
@@ -314,7 +355,9 @@ module vga_signals
 					colour <= 3'b111;
 		// timing == 0110
 		else if (square_number == 5'd20) // square 21
-			if (ins1[5] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b110;
+			else if (ins1[5] == 1'b1)
 				if (timing == 4'd6)
 					colour <= 3'b100;
 				else
@@ -325,7 +368,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd21) // square 22
-			if (ins2[5] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins2[5] == 1'b1)
 				if (timing == 4'd6)
 					colour <= 3'b100;
 				else
@@ -336,7 +381,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd22) // square 23
-			if (ins3[5] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins3[5] == 1'b1)
 				if (timing == 4'd6)
 					colour <= 3'b100;
 				else
@@ -347,7 +394,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd23) // square 24
-			if (ins4[5] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b110;
+			else if (ins4[5] == 1'b1)
 				if (timing == 4'd6)
 					colour <= 3'b100;
 				else
@@ -359,7 +408,9 @@ module vga_signals
 					colour <= 3'b111;
 		// timing == 0111
 		else if (square_number == 5'd24) // square 25
-			if (ins1[6] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins1[6] == 1'b1)
 				if (timing == 4'd7)
 					colour <= 3'b100;
 				else
@@ -370,7 +421,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd25) // square 26
-			if (ins2[6] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins2[6] == 1'b1)
 				if (timing == 4'd7)
 					colour <= 3'b100;
 				else
@@ -381,7 +434,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd26) // square 27
-			if (ins3[6] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b110;
+			else if (ins3[6] == 1'b1)
 				if (timing == 4'd7)
 					colour <= 3'b100;
 				else
@@ -392,7 +447,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd27) // square 28
-			if (ins4[6] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins4[6] == 1'b1)
 				if (timing == 4'd7)
 					colour <= 3'b100;
 				else
@@ -404,7 +461,9 @@ module vga_signals
 					colour <= 3'b111;
 		// timing == 1000
 		else if (square_number == 5'd28) // square 29
-			if (ins1[7] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins1[7] == 1'b1)
 				if (timing == 4'd8)
 					colour <= 3'b100;
 				else
@@ -415,7 +474,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd29) // square 30
-			if (ins2[7] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins2[7] == 1'b1)
 				if (timing == 4'd8)
 					colour <= 3'b100;
 				else
@@ -426,7 +487,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd30) // square 31
-			if (ins3[7] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins3[7] == 1'b1)
 				if (timing == 4'd8)
 					colour <= 3'b100;
 				else
@@ -437,7 +500,9 @@ module vga_signals
 				else
 					colour <= 3'b111;
 		else if (square_number == 5'd31) // square 32
-			if (ins4[7] == 1'b1)
+			if (timing == 4'd0)
+				colour <= 3'b111;
+			else if (ins4[7] == 1'b1)
 				if (timing == 4'd8)
 					colour <= 3'b100;
 				else
@@ -472,7 +537,7 @@ module vga_counters(
 	reg [4:0] square_state;
 	reg [4:0] next_square, current_square;
 	
-	// 4 bit counter
+	// 4 bit counter for drawing our square - state machine for full explanation
 	always @(posedge clk)
 	begin: counter_4bit
 		if (!reset || square_counter == 4'b0)
@@ -487,7 +552,8 @@ module vga_counters(
 		end
 	end
 
-	
+
+	// states for which square we are drawing
 	localparam square1 = 5'd0,
 		square2 = 5'd1,
 		square3 = 5'd2,
@@ -521,12 +587,21 @@ module vga_counters(
 		square31 = 5'd30,
 		square32 = 5'd31;
 		
-	// FSM for which square we are drawing - squares numbered as below
 	/*
+	FSM for which square we are drawing - squares numbered as below forming our display array
+	
+	The idea is that on every 16 pos clk edge we move to next square state since 
+	each square is 4x4 pixels. We draw each square using the 4-bit counter as individual
+	square offsets and then each square state also drives a larger x,y offset to draw
+	the squares where we want them on the vga display.
+	
+	array representation of what square is on the vga display
+	
 	1	 5	  9	 13	17		21		25		29
 	2	 6	  10	 14	18		22		26		30
 	3	 7	  11	 15	19		23		27		31
 	4	 8	  12	 16	20		24		28		32
+	
 	*/
 	always @(*)
 	begin: square_state_table
