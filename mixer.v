@@ -17,7 +17,7 @@ module mixer(mix_down,
 	adder_zero a1(.out(add_zero1), .in0(audio2), .in1(audio3), .clk(clk));
 	
 	// Second stage
-	adder_one a4(.out(add_one), .in0(add_zero0), .in1(add_zero1), .clk(clk));
+	adder_one a2(.out(add_one), .in0(add_zero0), .in1(add_zero1), .clk(clk));
 
 	assign mix_down = add_one;
 

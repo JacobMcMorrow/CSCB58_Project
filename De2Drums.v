@@ -152,7 +152,6 @@ module De2Drums(
 			hex1_in = 4'h0;
 	end
 
-	/*
 	// instantiate drum modules
 	sample kick(
 		.out(kick_out),
@@ -210,6 +209,5 @@ module De2Drums(
 		.AUD_DACLRCK(AUD_DACLRCK),
 		.I2C_SDAT(I2C_SDAT)
 		);
-		*/
 
 endmodule
