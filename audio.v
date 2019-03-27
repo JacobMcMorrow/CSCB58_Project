@@ -5,6 +5,7 @@ module audio(
 	CLOCK_50,
 	AUD_ADCDAT,
 	KEY,
+  SW,
 	mix_down, // Output from the mixer module
 	AUD_BCLK,
 	AUD_ADCLRCK,
@@ -12,6 +13,7 @@ module audio(
 	I2C_SDAT
 	);
 
+  input [3:0] SW;
 	input CLOCK_50;
 	input AUD_ADCDAT;
 	input [3:0] KEY;
@@ -44,6 +46,12 @@ module audio(
 	wire [31:0] left_channel_audio_out;
 	wire [31:0] right_channel_audio_out;
 
+  /*
+  reg [18:0] delay_cnt;
+  reg snd;
+  wire [18:0] delay;
+  */
+
 	/*
 	assign reset = ~KEY[1];
 
@@ -72,10 +80,22 @@ module audio(
 	end
 	*/
 
-	wire [31:0] out_sound = (mix_down) ? mix_down : 0;
+  /*
+  always @(posedge CLOCK_50)
+    if(delay_cnt == delay) begin
+      delay_cnt <= 0;
+      snd <= !snd;
+    end else delay_cnt <= delay_cnt + 1;
 
-	assign left_channel_audio_out = out_sound;
-	assign right_channel_audio_out = out_sound;
+
+  assign delay = {SW[3:0], 15'd3000};
+  */
+
+	// wire [31:0] out_sound = (mix_down) ? mix_down : 0;
+  // wire [31:0] out_sound = (SW == 0) ? 0 : snd ? 32'd10000000 : -32'd10000000;
+
+	assign left_channel_audio_out = mix_down; // out_sound;
+	assign right_channel_audio_out = mix_down; // out_sound;
 
 	Audio_Controller Audio_Controller(
 		.CLOCK_50(CLOCK_50),
@@ -98,10 +118,11 @@ module audio(
 		.AUD_DACLRCK(AUD_DACLRCK)
 		);
 
-	avconf avc(.I2C_SCLK(I2C_SCLK),
-						 .I2C_SDAT(I2C_SDAT),
-						 .CLOCK_50(CLOCK_50),
-						 .reset(~KEY[1])
-						 );
+	avconf #(.USE_MIC_INPUT(1)) avc(
+    .I2C_SCLK(I2C_SCLK),
+		.I2C_SDAT(I2C_SDAT),
+		.CLOCK_50(CLOCK_50),
+		.reset(~KEY[1])
+		);
 
 endmodule
