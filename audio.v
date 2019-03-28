@@ -13,7 +13,7 @@ module audio(
 	I2C_SDAT
 	);
 
-  input [3:0] SW;
+   input [3:0] SW;
 	input CLOCK_50;
 	input AUD_ADCDAT;
 	input [3:0] KEY;
@@ -43,8 +43,8 @@ module audio(
 	reg [31:0] right_channel_audio_out;
 	*/
 
-	wire [31:0] left_channel_audio_out;
-	wire [31:0] right_channel_audio_out;
+	//wire [31:0] left_channel_audio_out;
+	//wire [31:0] right_channel_audio_out;
 
   /*
   reg [18:0] delay_cnt;
@@ -80,22 +80,22 @@ module audio(
 	end
 	*/
 
-  /*
-  always @(posedge CLOCK_50)
+   /*
+   always @(posedge CLOCK_50)
     if(delay_cnt == delay) begin
       delay_cnt <= 0;
       snd <= !snd;
     end else delay_cnt <= delay_cnt + 1;
+	*/
 
-
-  assign delay = {SW[3:0], 15'd3000};
-  */
+   // assign delay = {SW[3:0], 15'd3000};
+  
 
 	// wire [31:0] out_sound = (mix_down) ? mix_down : 0;
-  // wire [31:0] out_sound = (SW == 0) ? 0 : snd ? 32'd10000000 : -32'd10000000;
+   // wire [31:0] out_sound = (SW == 0) ? 0 : snd ? 32'd10000000 : -32'd10000000;
 
-	assign left_channel_audio_out = mix_down; // out_sound;
-	assign right_channel_audio_out = mix_down; // out_sound;
+	//assign left_channel_audio_out = mix_down; // out_sound;
+	//assign right_channel_audio_out = mix_down; // out_sound;
 
 	Audio_Controller Audio_Controller(
 		.CLOCK_50(CLOCK_50),
@@ -103,8 +103,8 @@ module audio(
 		.clear_audio_in_memory(),
 		.read_audio_in(read_audio_in),
 		.clear_audio_out_memory(),
-		.left_channel_audio_out(left_channel_audio_out),
-		.right_channel_audio_out(right_channel_audio_out),
+		.left_channel_audio_out(mix_down),
+		.right_channel_audio_out(mix_down),
 		.write_audio_out(write_audio_out),
 		.AUD_ADCDAT(AUD_ADCDAT),
 		.audio_in_available(audio_in_available),

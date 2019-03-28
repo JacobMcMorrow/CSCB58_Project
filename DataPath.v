@@ -22,15 +22,14 @@ module datapath(
 	);
 	
 	//reg [7:0] ins1, ins2, ins3, ins4, bpm;
-	
+	initial ins1 = 8'b0;
+	initial ins2 = 8'b0;
+	initial ins3 = 8'b0;
+	initial ins4 = 8'b0;
+	initial set_bpm = 8'b0;
 	// instrument loading block
 	always @(*)  // currently inferring latches, do I want this to be synchronous? Leaning towards no.
 	begin: instrument_loading
-		ins1 <= 8'b0;
-		ins2 <= 8'b0;
-		ins3 <= 8'b0;
-		ins4 <= 8'b0;
-		set_bpm <= 8'b0;
 		if (!reset) 
 		begin
 			ins1 <= 8'b0;
@@ -68,55 +67,56 @@ module datapath(
 				ins3_out <= ins3[0];
 				ins4_out <= ins4[0];
 			end
-			if (timing == 4'b0010) begin
+			else if (timing == 4'b0010) begin
 				ins1_out <= ins1[1];
 				ins2_out <= ins2[1];
 				ins3_out <= ins3[1];
 				ins4_out <= ins4[1];
 			end
-			if (timing == 4'b0011) begin
+			else if (timing == 4'b0011) begin
 				ins1_out <= ins1[2];
 				ins2_out <= ins2[2];
 				ins3_out <= ins3[2];
 				ins4_out <= ins4[2];
 			end
-			if (timing == 4'b0100) begin
+			else if (timing == 4'b0100) begin
 				ins1_out <= ins1[3];
 				ins2_out <= ins2[3];
 				ins3_out <= ins3[3];
 				ins4_out <= ins4[3];
 			end
-			if (timing == 4'b0101) begin
+			else if (timing == 4'b0101) begin
 				ins1_out <= ins1[4];
 				ins2_out <= ins2[4];
 				ins3_out <= ins3[4];
 				ins4_out <= ins4[4];
 			end
-			if (timing == 4'b0110) begin
+			else if (timing == 4'b0110) begin
 				ins1_out <= ins1[5];
 				ins2_out <= ins2[5];
 				ins3_out <= ins3[5];
 				ins4_out <= ins4[5];
 			end
-			if (timing == 4'b0111) begin
+			else if (timing == 4'b0111) begin
 				ins1_out <= ins1[6];
 				ins2_out <= ins2[6];
 				ins3_out <= ins3[6];
 				ins4_out <= ins4[6];
 			end
-			if (timing == 4'b1000) begin
+			else if (timing == 4'b1000) begin
 				ins1_out <= ins1[7];
 				ins2_out <= ins2[7];
 				ins3_out <= ins3[7];
 				ins4_out <= ins4[7];
 			end
-			else
-			begin
+			/*
+			else begin
 				ins1_out <= 1'b0;
 				ins2_out <= 1'b0;
 				ins3_out <= 1'b0;
 				ins4_out <= 1'b0;
 			end
+			*/
 		end
 	end
 endmodule

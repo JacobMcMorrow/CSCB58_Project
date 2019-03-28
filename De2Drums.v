@@ -6,10 +6,11 @@ module De2Drums(
 	//output [8:0] LEDR,
 	output [6:0] HEX0, 
 	output [6:0] HEX1,
-	//output [6:0] HEX4,
-	//output [6:0] HEX5,
-	//output [6:0] HEX6,
-	//output [6:0] HEX7,
+	output [6:0] HEX4,
+	output [6:0] HEX5,
+	output [6:0] HEX6,
+	output [6:0] HEX7,
+	output [4:0] LEDR,
 	output AUD_XCK,
 	output AUD_DACDAT,
 	output I2C_SCLK,
@@ -28,7 +29,7 @@ module De2Drums(
 	);
 	
 	// for testing, set go to 1 and reset to store bpm
-	wire bpm_en, slowed_clock;
+	wire bpm_en, slowed_clock, sample_clk;
 	wire [7:0] ins1, ins2, ins3, ins4, set_bpm;
 	wire [3:0] timing;
 	wire ld_ins1, ld_ins2, ld_ins3, ld_ins4, ld_bpm, play;
@@ -151,37 +152,57 @@ module De2Drums(
 		else
 			hex1_in = 4'h0;
 	end
+	
+	// test mix down
+	hex_display hex_4(kick_out, HEX4);
+	hex_display hex_5(snare_out, HEX5);
+	hex_display hex_6(hat_out, HEX6);
+	hex_display hex_7(clap_out, HEX7);
+	
+	// rate divided clock for the audio - runs at 48kHz
+	sample_clock sample_clock(
+		.sample_clk(sample_clk),
+		.clk(CLOCK_50)
+		);
 
 	// instantiate drum modules
 	sample kick(
 		.out(kick_out),
 		.clk(CLOCK_50),
-		.en(play),
-		.go(ins1_out),
+		.sample_clk(sample_clk),
+		.slow_clk(bpm_en),
+		.play(play),
+		.ins_signal(ins1_out),
 		.sel(2'b00)
 		);
 
 	sample snare(
 		.out(snare_out),
 		.clk(CLOCK_50),
-		.en(play),
-		.go(ins2_out),
+		.sample_clk(sample_clk),
+		.slow_clk(bpm_en),
+		.play(play),
+		.ins_signal(ins2_out),
 		.sel(2'b01)
 		);
 
 	sample hat(
 		.out(hat_out),
 		.clk(CLOCK_50),
-		.en(play),
-		.go(ins3_out),
+		.sample_clk(sample_clk),
+		.slow_clk(bpm_en),
+		.play(play),
+		.ins_signal(ins3_out),
 		.sel(2'b10)
 		);
 
 	sample clap(
 		.out(clap_out),
 		.clk(CLOCK_50),
-		.en(play),
-		.go(ins4_out),
+		.sample_clk(sample_clk),
+		.slow_clk(bpm_en),
+		.play(play),
+		.ins_signal(ins4_out),
 		.sel(2'b11)
 		);
 	
@@ -201,14 +222,3 @@ module De2Drums(
 		.AUD_XCK(AUD_XCK),
 		.AUD_DACDAT(AUD_DACDAT),
 		.I2C_SCLK(I2C_SCLK),
-		.CLOCK_50(CLOCK_50),
-		.KEY(KEY),
-		.SW(SW[3:0]),
-		.mix_down(mix_down),
-		.AUD_BCLK(AUD_BCLK),
-		.AUD_ADCLRCK(AUD_ADCLRCK),
-		.AUD_DACLRCK(AUD_DACLRCK),
-		.I2C_SDAT(I2C_SDAT)
-		);
-
-endmodule

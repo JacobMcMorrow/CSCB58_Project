@@ -57,7 +57,7 @@ module vga_signals
 			.colour(colour),
 			.x(x),
 			.y(y),
-			.plot(play),
+			.plot(1),
 			/* Signals for the DAC to drive the monitor. */
 			.VGA_R(VGA_R),
 			.VGA_G(VGA_G),
