@@ -2,16 +2,10 @@ module counter(count, done, clk, slow_clk, ins_signal);
 	output reg [12:0] count;
 	output reg done;
 	input  clk, slow_clk, ins_signal;
-
-	// define parameters
-	// max count
-	//localparam MAXCOUNT = 13'd8191;
 	
 	// counter state machine
 	reg current_count_state, next_count_state, slow_reg;
-	localparam counting = 1'b1,
-		waiting = 1'b0,
-		MAXCOUNT = 13'd8191; 
+	localparam counting = 1'b1, waiting = 1'b0, MAXCOUNT = 13'd8191; 
 		
 	always @(*) begin
 	if (slow_clk)
