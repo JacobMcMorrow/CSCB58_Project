@@ -215,10 +215,19 @@ module De2Drums(
 		.audio3(clap_out),
 		.clk(CLOCK_50)
 		);
-
 	
-	// instantiate audio
-	audio audio(
-		.AUD_XCK(AUD_XCK),
-		.AUD_DACDAT(AUD_DACDAT),
-		.I2C_SCLK(I2C_SCLK),
+  // instantiate audio
+  audio audio(
+    .AUD_XCK(AUD_XCK),
+    .AUD_DACDAT(AUD_DACDAT),
+    .I2C_SCLK(I2C_SCLK),
+    .CLOCK_50(CLOCK_50),
+    .KEY(KEY),
+    .mix_down(mix_down),
+    .AUD_BCLK(AUD_BCLK),
+    .AUD_ADCLRCK(AUD_ADCLRCK),
+    .AUD_DACLRCK(AUD_DACLRCK),
+    .I2C_SDAT(I2C_SDAT)
+    );
+
+endmodule
