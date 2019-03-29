@@ -9,17 +9,15 @@ module audio(
 	AUD_ADCDAT,
 	// DE2 key buttons
 	KEY,
-  SW,
 	// Ouput from the mixer module
 	mix_down,
-	// DE2 bidirectional I/O
+	// DE2 audio bidirectional I/O
 	AUD_BCLK,
 	AUD_ADCLRCK,
 	AUD_DACLRCK,
 	I2C_SDAT
 	);
 
-   input [3:0] SW;
 	input CLOCK_50;
 	input AUD_ADCDAT;
 	input [3:0] KEY;
