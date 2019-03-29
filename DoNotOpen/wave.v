@@ -14,6 +14,10 @@ module wave #(
   output wire signed [OUTPUT_BITS-1:0] out,
   output wire accumulator_msb,
   output wire sync_trigger_out,
+	input wire en_sync,
+	input wire sync_source,
+	input wire en_shift,
+	input [FREQ_BITS-1:0] shift_freq,
 	input en_noise,
 	input en_pulse,
 	input en_triangle
@@ -62,9 +66,14 @@ module wave #(
 		else begin
       prev_accumulator <= accumulator;
       accumulator <= accumulator + tone_freq;
+			if (en_shift)
+				accumulator <= accumulator + shift_freq;
     end
   end
 
+	assign sync_trigger_out = (!(prev_accumulator & 24'h800000) 
+													&& (accumulator & 24'h800000) 
+													&& (!en_sync && sync_source));
 	assign accumulator_msb = accumulator[ACCUMULATOR_BITS-1];
 
   always @(posedge sample_clk) begin
@@ -73,8 +82,8 @@ module wave #(
       dout_tmp = dout_tmp & noise_dout;
     if (en_triangle)
       dout_tmp = dout_tmp & triangle_dout;
-		if (en_sine)
-			dout_tmp = dout_tmp & sine_dout)
+		if (en_pulse)
+			dout_tmp = dout_tmp & pulse_dout)
   end
 
   // convert dout value to a signed value
