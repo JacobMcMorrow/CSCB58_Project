@@ -227,3 +227,6 @@ module De2Drums(
 		.AUD_XCK(AUD_XCK),
 		.AUD_DACDAT(AUD_DACDAT),
 		.I2C_SCLK(I2C_SCLK),
+	);
+
+endmodule
