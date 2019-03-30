@@ -220,7 +220,6 @@ module De2Drums(
 		.audio3(clap_out),
 		.clk(CLOCK_50)
 		);
-
 	
 	// instantiate audio
   	audio audio(
