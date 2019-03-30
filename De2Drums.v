@@ -6,10 +6,10 @@ module De2Drums(
 	//output [8:0] LEDR,
 	output [6:0] HEX0, 
 	output [6:0] HEX1,
-	output [6:0] HEX4,
-	output [6:0] HEX5,
-	output [6:0] HEX6,
-	output [6:0] HEX7,
+	//output [6:0] HEX4,
+	//output [6:0] HEX5,
+	//output [6:0] HEX6,
+	//output [6:0] HEX7,
 	output [4:0] LEDR,
 	output AUD_XCK,
 	output AUD_DACDAT,
@@ -28,7 +28,6 @@ module De2Drums(
 	inout I2C_SDAT
 	);
 	
-	// for testing, set go to 1 and reset to store bpm
 	wire bpm_en, slowed_clock, sample_clk;
 	wire [7:0] ins1, ins2, ins3, ins4, set_bpm;
 	wire [3:0] timing;
@@ -41,7 +40,8 @@ module De2Drums(
 	// sample timings
 	wire ins1_out, ins2_out, ins3_out, ins4_out;
 
-	bpm bpm1( // currently this is connected with control and datapath for testing purposes
+	// variable bpm/clock module
+	bpm bpm1(
 		.bpm_out(bpm_en),
 		.clk(CLOCK_50),
 		.load_bpm(ld_bpm),
@@ -49,7 +49,8 @@ module De2Drums(
 		.play(play),
 		.bpm(set_bpm)
 		);
-		
+	
+	// control path for our audio timing and instrument loading states
 	control c1(
 		.ld_ins1(ld_ins1),
 		.ld_ins2(ld_ins2),
@@ -58,22 +59,23 @@ module De2Drums(
 		.ld_bpm(ld_bpm),
 		.play(play),
 		.timing(timing),
-		.clk(CLOCK_50), // try test clock
+		.clk(CLOCK_50),
 		.slow_clk(bpm_en),
 		.reset(KEY[1]),
-		.go(~KEY[2]) // KEY[3] to move between states, this will change
+		.go(~KEY[2])
 		);
-		
+	
+	// data path for audio timing and instrument loading
 	datapath d1(
 		.ins1_out(ins1_out),
 		.ins2_out(ins2_out),
 		.ins3_out(ins3_out),
 		.ins4_out(ins4_out),
 		.set_bpm(set_bpm),
-		.ins1(ins1), // testing
-		.ins2(ins2), // testing
-		.ins3(ins3), // testing
-		.ins4(ins4), // testing
+		.ins1(ins1),
+		.ins2(ins2),
+		.ins3(ins3),
+		.ins4(ins4),
 		.ld_ins1(ld_ins1),
 		.ld_ins2(ld_ins2),
 		.ld_ins3(ld_ins3),
@@ -86,7 +88,8 @@ module De2Drums(
 		.reset(KEY[1]),
 		.play(play)
 		);
-		
+	
+	// vga display module
 	vga_signals v1(
 		.clk(CLOCK_50),						//	On Board 50 MHz
 		.play(play),
@@ -107,10 +110,10 @@ module De2Drums(
 		.VGA_B(VGA_B)   								//	VGA Blue[9:0]
 	);
 	
-	// for testing only to see what instrument we are inputting
 	reg [3:0] hex0_in;
 	hex_display hex_0(hex0_in, HEX0);
 	
+	// display our load states on hex 0
 	always @(ld_ins1, ld_ins2, ld_ins3, ld_ins4, ld_bpm)
 	begin
 		if (ld_ins1 == 1'b1)
@@ -127,7 +130,7 @@ module De2Drums(
 			hex0_in <= 4'h0;
 	end
 	
-	// for timing testing
+	// display our beat number on hex 1
 	reg [3:0] hex1_in;
 	hex_display hex_1(hex1_in, HEX1);
 	
@@ -153,11 +156,13 @@ module De2Drums(
 			hex1_in = 4'h0;
 	end
 	
+	/*
 	// test mix down
 	hex_display hex_4(kick_out, HEX4);
 	hex_display hex_5(snare_out, HEX5);
 	hex_display hex_6(hat_out, HEX6);
 	hex_display hex_7(clap_out, HEX7);
+	*/
 	
 	// rate divided clock for the audio - runs at 48kHz
 	sample_clock sample_clock(
