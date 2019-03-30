@@ -3,8 +3,9 @@ module sample_clock(
 	input clk
 	);
 	
-	localparam MAXCOUNT = 11'd1042;
+	localparam MAXCOUNT = 11'd1042; // slow CLOCK_50 down to 48kHz
 	
+	// simple 48kHz clock to read our audio ROMs
 	reg [10:0] count;
 	always @(posedge clk) begin
 		if (count == 11'b0) begin
