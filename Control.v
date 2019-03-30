@@ -14,6 +14,7 @@ module control(
 	
 	reg [3:0] current_state, next_state, curr_loop_state, next_loop_state;
 	
+	// states for state machines
 	localparam S_LOAD_NEUTRAL = 4'd0,
 		S_LOAD_NEUTRAL_WAIT = 4'd1,
 		S_LOAD_INS1 = 4'd2,
@@ -38,10 +39,11 @@ module control(
 		S_QUARTER_NOTE4 = 4'd7,
 		S_EIGHTH_NOTE4 = 4'd8;
 		
+	// state machine for initial load states
 	always @(*)
 	begin: state_table
 		case (current_state)
-			// neutral state - nothing happens here
+			// neutral state - nothing happens here - needed for vga display
 			S_LOAD_NEUTRAL: next_state = go ? S_LOAD_NEUTRAL_WAIT : S_LOAD_NEUTRAL;
 			S_LOAD_NEUTRAL_WAIT: next_state = go ? S_LOAD_NEUTRAL_WAIT : S_LOAD_BPM;
 			// load bpm - note: will have to check to see if we are loading 0
@@ -59,12 +61,13 @@ module control(
 			// load instrument 4
 			S_LOAD_INS4: next_state = go ? S_LOAD_INS4_WAIT : S_LOAD_INS4;
 			S_LOAD_INS4_WAIT: next_state = go ? S_LOAD_INS4_WAIT : S_PLAY;
-			// loop through the 8 beats indefinitely
+			// loop through the 8 beats indefinitely in this state
 			S_PLAY: next_state = S_PLAY;
 			default: next_state = S_LOAD_NEUTRAL;
 		endcase
 	end
 	
+	// signal for load states
 	always @(*)
 	begin: load_state_signals
 		ld_ins1 <= 1'b0;
@@ -85,6 +88,7 @@ module control(
 		endcase
 	end
 	
+	// state machine for audio timing - loops through the beats indefinitely until there is no more play signal
 	always @(*)
 	begin: loop_state
 		case (curr_loop_state)
@@ -101,6 +105,7 @@ module control(
 		endcase
 	end
 	
+	// signals for audio timing
 	always @(*)
 	begin: loop_state_signals
 		timing <= 4'd0;
@@ -136,6 +141,7 @@ module control(
 		endcase
 	end
 	
+	// initial loading stage runs on CLOCK_50
 	always @(posedge clk)
 	begin: load_state_transitions
 		if (!reset)
@@ -146,6 +152,7 @@ module control(
 			current_state <= next_state;
 	end
 	
+	// audio timing runs on the variable bpm clock
 	always @(posedge slow_clk)
 	begin: loop_state_transitions
 		if (!reset || !play)
