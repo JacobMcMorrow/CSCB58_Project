@@ -1,13 +1,30 @@
 module adder_zero(out, in0, in1, clk);
+	// New 10-bit audio output
 	output [8:0] out;
+	// 50MHz system clock
 	input clk;
+	// 8-bit audio signal inputs
 	input [7:0] in0, in1;
 
+	// create wires for carry-over bit outputs and first carry-over input
 	wire fa0_cout, fa1_cout, fa2_cout, fa3_cout, fa4_cout, fa5_cout, fa6_cout, 
 		 fa7_cout, cin;
 
+	// Initialize carry-over into first full adder to 0
 	assign cin = 1'b0;
 
+	/*
+     A series of single bit full adders where the first full adders takes the
+     initial 0 carry over input and  each successful full adder takes the carry
+     over output from the previous adder as input. Each adder is taking the sum
+     of each individual bit from both input audio signals and adding them
+     together in order. I.e. bit 1 from signal one is added to bit 1 from signal 
+     two  bit 2 to bit 2, etc. The equivalent bit of the output signal is
+     assigned the subsequet sum of the corresponding bits.
+ 
+     We assign the carry over bit from the final addition to be the ninnth bit
+     of the resultant signal.
+  */
 	full_adder fa0(
 		.cout(fa0_cout),
 		.sum(out[0]),
@@ -80,6 +97,7 @@ module adder_zero(out, in0, in1, clk);
 		.clk(clk)
 		);
 
+	// Assing the ninth bit of new audio signal to eighth adder's carry over
 	assign out[8] = fa7_cout;
 
 endmodule

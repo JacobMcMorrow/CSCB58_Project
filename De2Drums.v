@@ -216,9 +216,9 @@ module De2Drums(
 		.clk(CLOCK_50)
 		);
 
-	// instantiate audio
-	audio audio(
-		.AUD_XCK(AUD_XCK),
+  // instantiate audio
+  audio audio(
+    .AUD_XCK(AUD_XCK),
     .AUD_DACDAT(AUD_DACDAT),
     .I2C_SCLK(I2C_SCLK),
     .CLOCK_50(CLOCK_50),
