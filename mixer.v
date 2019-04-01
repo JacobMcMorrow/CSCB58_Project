@@ -11,7 +11,7 @@ module mixer(mix_down,
 
 	wire [8:0] add_zero0, add_zero1;
 	wire [9:0] add_one;
-	
+
 	/*
 		 The mixer operates by adding each of the input audio signals pairwise
 		 bit by bit, which results in a signal that is comprised of the each

@@ -28,9 +28,9 @@ module datapath(
 	initial ins4 = 8'b0;
 	initial set_bpm = 8'b0;
 	// instrument loading block
-	always @(*)  // currently inferring latches, do I want this to be synchronous? Leaning towards no.
+	always @(*) 
 	begin: instrument_loading
-		if (!reset) 
+		if (!reset) // reset all ins bits to 0 on asynchronous reset
 		begin
 			ins1 <= 8'b0;
 			ins2 <= 8'b0;
@@ -38,7 +38,7 @@ module datapath(
 			ins4 <= 8'b0;
 		end
 		else
-		begin
+		begin // load ins bits into reg based on control path load states
 			if (ld_ins1)
 				ins1 <= sel[7:0];
 			if (ld_ins2)
@@ -55,11 +55,11 @@ module datapath(
 	// instrument timing block
 	always @(*)
 	begin: instrument_timing
-		ins1_out <= 1'b0;
+		ins1_out <= 1'b0; // defaults
 		ins2_out <= 1'b0;
 		ins3_out <= 1'b0;
 		ins4_out <= 1'b0;
-		if (play)
+		if (play) // timing only begins with a play signal when control is in the S_PLAY state
 		begin
 			if (timing == 4'b0001) begin
 				ins1_out <= ins1[0];
@@ -109,14 +109,6 @@ module datapath(
 				ins3_out <= ins3[7];
 				ins4_out <= ins4[7];
 			end
-			/*
-			else begin
-				ins1_out <= 1'b0;
-				ins2_out <= 1'b0;
-				ins3_out <= 1'b0;
-				ins4_out <= 1'b0;
-			end
-			*/
 		end
 	end
 endmodule
