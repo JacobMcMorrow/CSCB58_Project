@@ -52,7 +52,8 @@ module audio(
 		 Instantiate the provided audio controller module to interface with the
 		 DE2 ADC/DAC chipset, I/O ports, and audio codec
 
-		 Module and backend courtesy of:
+		 Module and backend courtesy of: 
+		 http://www.eecg.toronto.edu/~jayar/ece241_08F/AudioVideoCores/audio/audio.html
 
 		 Modified to meet the data flow of this project
 	*/
@@ -88,6 +89,7 @@ module audio(
 		 project
 
 		 Module courtesy of:
+		 http://www.eecg.toronto.edu/~jayar/ece241_08F/AudioVideoCores/avconf/avconf.html
 
 		 Modified to meet the dataflow of this project
 	*/
