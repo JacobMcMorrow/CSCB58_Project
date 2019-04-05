@@ -28,10 +28,13 @@ In addition, the display should have have a 4x8 array of squares. Each row repre
 and each square from left to right represent each beat. The moving (red/blue) colour bar represents what beat is currently
 playing. Here are what each colour represent.
 
-      White - the instrument has this bit set to 0 (it will not play when we hit this timing)
-      Green - the instrument has this bit set to 1 (it will play only when we hit this timing)
-      Blue - we are currently on this beat but the instrument is not playing
-      Red - we are currently on this beat and the instrument is playing
+White - the instrument has this bit set to 0 (it will not play when we hit this timing)
+
+Green - the instrument has this bit set to 1 (it will play only when we hit this timing)
+
+Blue - we are currently on this beat but the instrument is not playing
+
+Red - we are currently on this beat and the instrument is playing
 
 4. Resetting (Optional)
 If at any time you wish to reset (during any stage including the loading states), simply press KEY1. This will revert 
