@@ -39,6 +39,6 @@ module mixer(mix_down,
 		 Pad the end of add_one with zeros to bring signal up to appropriate level
 		 in 32-bit audio environment
 	*/
-	assign mix_down = {add_one, 22'b0};
+	assign mix_down = {add_one, 20'b0};
 
 endmodule
